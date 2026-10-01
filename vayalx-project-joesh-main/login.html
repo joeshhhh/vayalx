@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VAYALX - Unified Smart Agriculture Platform for Tamil Nadu. Choose your portal: Farmer, Buyer, or Supplier." />
+  <title>VAYALX &ndash; Choose Your Portal | Role Selection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="api.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --soil: #2D2416;
+      --growth: #2ECC71;
+      --growth-dk: #27ae60;
+      --sky: #3498DB;
+      --harvest: #F39C12;
+      --purple: #9B59B6;
+      --bg: #0F1A12;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --border: #E2E8F0;
+      --text: #1E293B;
+      --muted: #64748B;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Tamil', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      background: radial-gradient(circle at 10% 20%, rgba(46, 204, 113, 0.22) 0%, transparent 45%),
+                  radial-gradient(circle at 90% 80%, rgba(52, 152, 219, 0.18) 0%, transparent 45%),
+                  radial-gradient(circle at 50% 50%, rgba(243, 156, 18, 0.1) 0%, transparent 55%),
+                  linear-gradient(135deg, #132419 0%, #0a140d 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+    header {
+      padding: 22px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo span { color: var(--growth); }
+    .logo-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: rgba(46, 204, 113, 0.2);
+      color: var(--growth);
+      border: 1px solid rgba(46, 204, 113, 0.4);
+      padding: 3px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .btn-lang {
+      padding: 8px 16px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s;
+    }
+    .btn-lang:hover { background: rgba(255, 255, 255, 0.2); }
+    .btn-lang span.active {
+      background: var(--growth);
+      color: #fff;
+      padding: 2px 7px;
+      border-radius: 5px;
+    }
+    .back-home {
+      color: rgba(255, 255, 255, 0.75);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: color 0.18s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .back-home:hover { color: #fff; }
+
+    main {
+      position: relative;
+      z-index: 10;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 10px 24px 40px;
+      width: 100%;
+    }
+
+    .hackathon-banner {
+      background: linear-gradient(90deg, rgba(46, 204, 113, 0.2), rgba(52, 152, 219, 0.2));
+      border: 1px solid rgba(46, 204, 113, 0.4);
+      border-radius: 12px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #E2E8F0;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+    .hb-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+    }
+    .hb-badge {
+      background: var(--growth);
+      color: #0F1A12;
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-heading {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .hero-heading h1 {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .hero-heading h1 span {
+      background: linear-gradient(135deg, #2ECC71 0%, #7ee39d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-heading p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.75);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* 3 Large Role Cards */
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+    @media (max-width: 960px) {
+      .role-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; }
+    }
+
+    .role-card {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 32px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+      cursor: pointer;
+    }
+    .role-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--growth);
+      opacity: 0.8;
+      transition: height 0.2s;
+    }
+    .role-card.card-buyer::before { background: var(--sky); }
+    .role-card.card-supplier::before { background: var(--harvest); }
+
+    .role-card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.11);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+    }
+    .role-card.card-farmer:hover {
+      border-color: rgba(46, 204, 113, 0.6);
+      box-shadow: 0 20px 40px rgba(46, 204, 113, 0.2);
+    }
+    .role-card.card-buyer:hover {
+      border-color: rgba(52, 152, 219, 0.6);
+      box-shadow: 0 20px 40px rgba(52, 152, 219, 0.2);
+    }
+    .role-card.card-supplier:hover {
+      border-color: rgba(243, 156, 18, 0.6);
+      box-shadow: 0 20px 40px rgba(243, 156, 18, 0.2);
+    }
+
+    .role-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .role-icon-box {
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.85rem;
+      background: rgba(46, 204, 113, 0.15);
+      border: 1px solid rgba(46, 204, 113, 0.3);
+      flex-shrink: 0;
+    }
+    .card-buyer .role-icon-box {
+      background: rgba(52, 152, 219, 0.15);
+      border-color: rgba(52, 152, 219, 0.3);
+    }
+    .card-supplier .role-icon-box {
+      background: rgba(243, 156, 18, 0.15);
+      border-color: rgba(243, 156, 18, 0.3);
+    }
+
+    .role-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+    .role-badge-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.9);
+      display: inline-block;
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .role-desc {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.78);
+      line-height: 1.6;
+      margin-bottom: 22px;
+      min-height: 48px;
+    }
+
+    .role-features {
+      list-style: none;
+      margin-bottom: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .role-features li {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.85);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .role-features li svg {
+      width: 16px;
+      height: 16px;
+      color: var(--growth);
+      flex-shrink: 0;
+    }
+    .card-buyer .role-features li svg { color: var(--sky); }
+    .card-supplier .role-features li svg { color: var(--harvest); }
+
+    .btn-role-action {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: inherit;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-farmer {
+      background: linear-gradient(135deg, var(--growth) 0%, var(--growth-dk) 100%);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(46, 204, 113, 0.35);
+    }
+    .btn-farmer:hover {
+      background: #2ECC71;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(46, 204, 113, 0.45);
+    }
+    .btn-buyer {
+      background: linear-gradient(135deg, #3498DB 0%, #2980B9 100%);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(52, 152, 219, 0.35);
+    }
+    .btn-buyer:hover {
+      background: #3498DB;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(52, 152, 219, 0.45);
+    }
+    .btn-supplier {
+      background: linear-gradient(135deg, #F39C12 0%, #D68910 100%);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(243, 156, 18, 0.35);
+    }
+    .btn-supplier:hover {
+      background: #F39C12;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(243, 156, 18, 0.45);
+    }
+
+    /* Manual profile entry */
+    .manual-entry {
+      margin: 28px 0;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 16px;
+      color: var(--soil);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.18);
+    }
+    .manual-entry-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
+    .manual-entry h2 { font-size: 1.15rem; font-weight: 800; }
+    .manual-entry p { color: var(--muted); font-size: 0.82rem; margin-top: 4px; }
+    .manual-entry-badge { color: var(--growth-dk); background: rgba(46, 204, 113, 0.1); border: 1px solid rgba(46, 204, 113, 0.28); border-radius: 999px; padding: 5px 10px; font-size: 0.7rem; font-weight: 700; white-space: nowrap; }
+    .manual-entry-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .manual-field label { display: block; color: var(--soil); font-size: 0.74rem; font-weight: 700; margin-bottom: 5px; }
+    .manual-field input, .manual-field select { width: 100%; padding: 11px 12px; border: 1px solid #d8d4cc; border-radius: 8px; background: #fff; color: var(--text); font: inherit; font-size: 0.86rem; outline: none; }
+    .manual-field input:focus, .manual-field select:focus { border-color: var(--growth); box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.12); }
+    .manual-entry-submit { width: 100%; margin-top: 14px; border: 0; border-radius: 8px; padding: 12px 16px; background: var(--soil); color: #fff; font: inherit; font-weight: 700; cursor: pointer; transition: transform .18s, background .18s; }
+    .manual-entry-submit:hover { background: #463821; transform: translateY(-1px); }
+    @media (max-width: 720px) {
+      .manual-entry-grid { grid-template-columns: 1fr; }
+      .manual-entry-head { display: block; }
+      .manual-entry-badge { display: inline-block; margin-top: 10px; }
+    }
+
+    /* Fast Track Section */
+    .fast-track-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .ft-left h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ft-left p {
+      font-size: 0.84rem;
+      color: rgba(255, 255, 255, 0.65);
+      margin-top: 3px;
+    }
+    .ft-chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .ft-chip {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .ft-chip:hover {
+      background: rgba(46, 204, 113, 0.2);
+      border-color: var(--growth);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.84rem;
+      position: relative;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">
+      Vayal<span>X</span>
+      <span class="logo-badge">Smart Agro TN</span>
+    </a>
+    <div class="top-actions">
+      <a href="index.html" class="back-home">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        <span id="txt-home">Website</span>
+      </a>
+      <button class="btn-lang" id="lang-toggle" onclick="toggleLanguage()">
+        <span id="lang-en" class="active">EN</span>|<span id="lang-ta">தமிழ்</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div class="hackathon-banner">
+      <div class="hb-content">
+        <span class="hb-badge">🏆 Hackathon Demo Mode</span>
+        <span id="txt-banner">🔒 Hackathon Demo Mode – No password or OTP required. Select your role to launch!</span>
+      </div>
+      <div style="font-weight: 700; font-size: 0.82rem; color: var(--growth);" id="txt-status">100% Free Demo Mode</div>
+    </div>
+
+    <div class="hero-heading">
+      <h1 id="txt-hero-title">Welcome to <span>VAYALX</span></h1>
+      <p id="txt-hero-sub">Choose your portal to continue</p>
+    </div>
+
+    <!-- 3 Role Portals Grid -->
+    <div class="role-grid">
+      
+      <!-- 1. FARMER -->
+      <div class="role-card card-farmer" onclick="window.location.href='farmer-login.html'">
+        <div>
+          <div class="role-header">
+            <div class="role-icon-box">🌾</div>
+            <div>
+              <div class="role-title" id="txt-farmer-title">FARMER</div>
+              <span class="role-badge-tag" id="tag-farmer">Producers &amp; Growers</span>
+            </div>
+          </div>
+          <p class="role-desc" id="txt-farmer-desc">Manage your farm, crops, requests and marketplace activities.</p>
+          <ul class="role-features">
+            <li>
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span id="f-feat1">AI Crop Disease &amp; Soil Health Diagnosis</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span id="f-feat2">Real Weather &amp; Smart Water IoT</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span id="f-feat3">Pre-Booking Tokens &amp; 16 Modules</span>
+            </li>
+          </ul>
+        </div>
+        <a href="farmer-login.html" class="btn-role-action btn-farmer" onclick="event.stopPropagation();">
+          <span id="txt-btn-farmer">Login as Farmer</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+
+      <!-- 2. BUYER -->
+      <div class="role-card card-buyer" onclick="window.location.href='buyer-login.html'">
+        <div>
+          <div class="role-header">
+            <div class="role-icon-box">🛒</div>
+            <div>
+              <div class="role-title" id="txt-buyer-title">BUYER</div>
+              <span class="role-badge-tag" id="tag-buyer">Wholesalers &amp; Retailers</span>
+            </div>
+          </div>
+          <p class="role-desc" id="txt-buyer-desc">Find farmers, discover products and create purchase requests.</p>
+          <ul class="role-features">
+            <li>
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span id="b-feat1">Direct Farm Produce Sourcing</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span id="b-feat2">Post Bulk Purchase Demands / Tenders</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span id="b-feat3">Live Mandi Index &amp; Forward Contracts</span>
+            </li>
+          </ul>
+        </div>
+        <a href="buyer-login.html" class="btn-role-action btn-buyer" onclick="event.stopPropagation();">
+          <span id="txt-btn-buyer">Login as Buyer</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+
+      <!-- 3. SUPPLIER -->
+      <div class="role-card card-supplier" onclick="window.location.href='supplier-login.html'">
+        <div>
+          <div class="role-header">
+            <div class="role-icon-box">🚜</div>
+            <div>
+              <div class="role-title" id="txt-supplier-title">SUPPLIER</div>
+              <span class="role-badge-tag" id="tag-supplier">Inputs &amp; Machinery</span>
+            </div>
+          </div>
+          <p class="role-desc" id="txt-supplier-desc">Supply agricultural inputs, equipment and services to farmers.</p>
+          <ul class="role-features">
+            <li>
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span id="s-feat1">Tractor &amp; Drone Fleet Rental Hub</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span id="s-feat2">Certified Seeds &amp; Bio-Inputs Catalog</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span id="s-feat3">Direct Farmer Bookings &amp; Gov Schemes</span>
+            </li>
+          </ul>
+        </div>
+        <a href="supplier-login.html" class="btn-role-action btn-supplier" onclick="event.stopPropagation();">
+          <span id="txt-btn-supplier">Login as Supplier</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+
+    </div>
+
+    <section class="manual-entry" aria-labelledby="manual-entry-title">
+      <div class="manual-entry-head">
+        <div>
+          <h2 id="manual-entry-title">Enter your details manually</h2>
+          <p>Your name and farm or business details will appear on your dashboard.</p>
+        </div>
+        <span class="manual-entry-badge">Instant demo access</span>
+      </div>
+      <form id="manual-entry-form" onsubmit="handleManualEntry(event)">
+        <div class="manual-entry-grid">
+          <div class="manual-field">
+            <label for="manual-role">I am a</label>
+            <select id="manual-role" required>
+              <option value="farmer">Farmer</option>
+              <option value="buyer">Buyer</option>
+              <option value="supplier">Supplier</option>
+            </select>
+          </div>
+          <div class="manual-field">
+            <label for="manual-name">Your name</label>
+            <input id="manual-name" type="text" placeholder="e.g. Meena K." autocomplete="name" required>
+          </div>
+          <div class="manual-field">
+            <label for="manual-phone">Mobile number</label>
+            <input id="manual-phone" type="tel" placeholder="10-digit mobile" autocomplete="tel" required>
+          </div>
+          <div class="manual-field">
+            <label for="manual-district">District / city</label>
+            <input id="manual-district" type="text" placeholder="e.g. Thanjavur" required>
+          </div>
+          <div class="manual-field">
+            <label for="manual-focus">Crop or business focus</label>
+            <input id="manual-focus" type="text" placeholder="e.g. Paddy / Wholesale" required>
+          </div>
+        </div>
+        <button class="manual-entry-submit" type="submit">Continue to my dashboard &nbsp;→</button>
+      </form>
+    </section>
+
+    <!-- Evaluator Fast Track Chips -->
+    <div class="fast-track-box">
+      <div class="ft-left">
+        <h3 id="txt-ft-title">⚡ Evaluator 1-Click Fast-Track:</h3>
+        <p id="txt-ft-desc">Jump straight into pre-populated demo dashboards for each stakeholder role:</p>
+      </div>
+      <div class="ft-chips">
+        <button class="ft-chip" onclick="quickDemo('farmer')">🌾 Selvam (Farmer)</button>
+        <button class="ft-chip" onclick="quickDemo('buyer')">🛒 Sundaram Agro (Buyer)</button>
+        <button class="ft-chip" onclick="quickDemo('supplier')">🚜 Tamil Agro (Supplier)</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    VAYALX &copy; 2026 &bull; Smart Agriculture Innovation for Tamil Nadu &bull; Hackathon Working Prototype
+  </footer>
+
+  <script>
+    let currentLang = localStorage.getItem('vayalx_lang') || 'en';
+
+    const translations = {
+      en: {
+        banner: "🔒 Hackathon Demo Mode – No password or OTP required. Select your role to launch!",
+        status: "100% Free Demo Mode",
+        heroTitle: 'Welcome to <span style="background:linear-gradient(135deg,#2ECC71,#7ee39d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">VAYALX</span>',
+        heroSub: "Choose your portal to continue",
+        farmerTitle: "FARMER",
+        farmerDesc: "Manage your farm, crops, requests and marketplace activities.",
+        btnFarmer: "Login as Farmer",
+        tagFarmer: "Producers & Growers",
+        fFeat1: "AI Crop Disease & Soil Health Diagnosis",
+        fFeat2: "Real Weather & Smart Water IoT",
+        fFeat3: "Pre-Booking Tokens & 16 Modules",
+
+        buyerTitle: "BUYER",
+        buyerDesc: "Find farmers, discover products and create purchase requests.",
+        btnBuyer: "Login as Buyer",
+        tagBuyer: "Wholesalers & Retailers",
+        bFeat1: "Direct Farm Produce Sourcing",
+        bFeat2: "Post Bulk Purchase Demands / Tenders",
+        bFeat3: "Live Mandi Index & Forward Contracts",
+
+        supplierTitle: "SUPPLIER",
+        supplierDesc: "Supply agricultural inputs, equipment and services to farmers.",
+        btnSupplier: "Login as Supplier",
+        tagSupplier: "Inputs & Machinery",
+        sFeat1: "Tractor & Drone Fleet Rental Hub",
+        sFeat2: "Certified Seeds & Bio-Inputs Catalog",
+        sFeat3: "Direct Farmer Bookings & Gov Schemes",
+
+        ftTitle: "⚡ Evaluator 1-Click Fast-Track:",
+        ftDesc: "Jump straight into pre-populated demo dashboards for each stakeholder role:",
+        home: "Website"
+      },
+      ta: {
+        banner: "🔒 ஹேக்கத்தான் நேரடி மாதிரி வடிவம் – கடவுச்சொல் அல்லது OTP தேவையில்லை. உங்கள் தளத்தைத் தேர்வுசெய்க!",
+        status: "100% இலவச செயல்முறை வடிவம்",
+        heroTitle: '<span style="background:linear-gradient(135deg,#2ECC71,#7ee39d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">வயல்X</span> தளத்திற்கு நல்வரவு',
+        heroSub: "தொடர உங்கள் தளத்தைத் தேர்ந்தெடுக்கவும்",
+        farmerTitle: "விவசாயி (FARMER)",
+        farmerDesc: "உங்கள் நிலம், பயிர்கள், பாசனம் மற்றும் சந்தை நடவடிக்கைகளை நிர்வகிக்கவும்.",
+        btnFarmer: "விவசாயியாக உள்நுழைக",
+        tagFarmer: "உற்பத்தியாளர்கள் & விவசாயிகள்",
+        fFeat1: "AI நோய் கண்டறிதல் & மண் பரிசோதனை",
+        fFeat2: "நேரடி வானிலை & நுண்ணீர் பாசனம்",
+        fFeat3: "முன்பதிவு டோக்கன் & 16 செயலிகள்",
+
+        buyerTitle: "கொள்முதல் வியாபாரி (BUYER)",
+        buyerDesc: "விவசாயிகளை நேரடியாகக் கண்டறிந்து, விளைபொருட்களை வாங்கி ஒப்பந்தம் இடவும்.",
+        btnBuyer: "வியாபாரியாக உள்நுழைக",
+        tagBuyer: "மொத்த & சில்லறை வர்த்தகர்கள்",
+        bFeat1: "நேரடி பண்ணை விளைபொருள் கொள்முதல்",
+        bFeat2: "மொத்த கொள்முதல் தேவை / டெண்டர் பதிவு",
+        bFeat3: "சந்தை விலை நிலவரம் & உறுதிப்படுத்திய ஒப்பந்தம்",
+
+        supplierTitle: "வழங்குநர் (SUPPLIER)",
+        supplierDesc: "விவசாயிகளுக்கு உரம், விதைகள், இயந்திரங்கள் மற்றும் சேவைகளை வழங்கவும்.",
+        btnSupplier: "வழங்குநராக உள்நுழைக",
+        tagSupplier: "இயந்திரங்கள் & வேளாண் உள்ளீடுகள்",
+        sFeat1: "டிராக்டர் & ட்ரோன் வாடகை மையம்",
+        sFeat2: "சான்றளிக்கப்பட்ட விதைகள் & இயற்கை உரங்கள்",
+        sFeat3: "விவசாயிகள் நேரடி முன்பதிவு & மானிய திட்டங்கள்",
+
+        ftTitle: "⚡ 1-கிளிக் நேரடி சோதனை வழிகள்:",
+        ftDesc: "ஒவ்வொரு துறைக்கும் தயாராக உள்ள மாதிரி டாஷ்போர்டை உடனடியாகத் திறக்கலாம்:",
+        home: "முகப்பு"
+      }
+    };
+
+    function updateLanguageUI() {
+      const t = translations[currentLang];
+      document.getElementById('txt-banner').textContent = t.banner;
+      document.getElementById('txt-status').textContent = t.status;
+      document.getElementById('txt-hero-title').innerHTML = t.heroTitle;
+      document.getElementById('txt-hero-sub').textContent = t.heroSub;
+      
+      document.getElementById('txt-farmer-title').textContent = t.farmerTitle;
+      document.getElementById('txt-farmer-desc').textContent = t.farmerDesc;
+      document.getElementById('txt-btn-farmer').textContent = t.btnFarmer;
+      document.getElementById('tag-farmer').textContent = t.tagFarmer;
+      document.getElementById('f-feat1').textContent = t.fFeat1;
+      document.getElementById('f-feat2').textContent = t.fFeat2;
+      document.getElementById('f-feat3').textContent = t.fFeat3;
+
+      document.getElementById('txt-buyer-title').textContent = t.buyerTitle;
+      document.getElementById('txt-buyer-desc').textContent = t.buyerDesc;
+      document.getElementById('txt-btn-buyer').textContent = t.btnBuyer;
+      document.getElementById('tag-buyer').textContent = t.tagBuyer;
+      document.getElementById('b-feat1').textContent = t.bFeat1;
+      document.getElementById('b-feat2').textContent = t.bFeat2;
+      document.getElementById('b-feat3').textContent = t.bFeat3;
+
+      document.getElementById('txt-supplier-title').textContent = t.supplierTitle;
+      document.getElementById('txt-supplier-desc').textContent = t.supplierDesc;
+      document.getElementById('txt-btn-supplier').textContent = t.btnSupplier;
+      document.getElementById('tag-supplier').textContent = t.tagSupplier;
+      document.getElementById('s-feat1').textContent = t.sFeat1;
+      document.getElementById('s-feat2').textContent = t.sFeat2;
+      document.getElementById('s-feat3').textContent = t.sFeat3;
+
+      document.getElementById('txt-ft-title').textContent = t.ftTitle;
+      document.getElementById('txt-ft-desc').textContent = t.ftDesc;
+      document.getElementById('txt-home').textContent = t.home;
+
+      document.getElementById('lang-en').className = currentLang === 'en' ? 'active' : '';
+      document.getElementById('lang-ta').className = currentLang === 'ta' ? 'active' : '';
+      localStorage.setItem('vayalx_lang', currentLang);
+    }
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'ta' : 'en';
+      updateLanguageUI();
+    }
+
+    function handleManualEntry(event) {
+      event.preventDefault();
+      const role = document.getElementById('manual-role').value;
+      const name = document.getElementById('manual-name').value.trim();
+      const phone = document.getElementById('manual-phone').value.trim();
+      const district = document.getElementById('manual-district').value.trim();
+      const focus = document.getElementById('manual-focus').value.trim();
+
+      localStorage.setItem('vayalxRole', role);
+
+      if (role === 'farmer') {
+        localStorage.setItem('vayalx_user', JSON.stringify({
+          name, phone, district, crop: focus, acres: 'Not specified',
+          title: 'VAYALX Farmer', role
+        }));
+        window.location.href = 'dashboard.html';
+      } else if (role === 'buyer') {
+        localStorage.setItem('vayalx_buyer_user', JSON.stringify({
+          name, phone, district, type: focus, org: focus, role
+        }));
+        window.location.href = 'buyer-dashboard.html';
+      } else {
+        localStorage.setItem('vayalx_supplier_user', JSON.stringify({
+          name, phone, district, category: focus, org: focus, role
+        }));
+        window.location.href = 'supplier-dashboard.html';
+      }
+    }
+
+    async function quickDemo(role) {
+      localStorage.setItem('vayalxRole', role);
+
+      if (role === 'farmer') {
+        if (window.VayalXAuth) {
+          try {
+            await window.VayalXAuth.fastTrackLogin({
+              name: 'Selvam R.',
+              email: 'selvam.farmer@vayalx.demo',
+              mobile: '9876543210',
+              role: 'farmer',
+              district: 'Thanjavur',
+              crop: 'Paddy (Ponni)',
+              landArea: 4.5
+            });
+          } catch (e) {
+            console.warn('[VAYALX Auth] Fast track notice:', e.message);
+          }
+        }
+        const user = { name: 'Selvam R.', district: 'Thanjavur', crop: 'Paddy (Ponni)', acres: '4.5 Acres', title: '🌾 Samba Paddy Master', role: 'farmer' };
+        localStorage.setItem('vayalx_user', JSON.stringify(user));
+        window.location.href = 'dashboard.html';
+      } else if (role === 'buyer') {
+        if (window.VayalXAuth) {
+          try {
+            await window.VayalXAuth.fastTrackLogin({
+              name: 'Sundaram Agro Wholesale',
+              email: 'sundaram.procurement@vayalx.demo',
+              mobile: '9876543211',
+              role: 'buyer',
+              businessName: 'Sundaram Agro Exporters',
+              businessType: 'Wholesaler',
+              district: 'Chennai'
+            });
+          } catch (e) {
+            console.warn('[VAYALX Auth] Fast track notice:', e.message);
+          }
+        }
+        const buyer = { name: 'Sundaram Agro Wholesale', phone: '98401 23456', district: 'Chennai', type: 'Wholesaler', role: 'buyer', org: 'Sundaram Agro Exporters' };
+        localStorage.setItem('vayalx_buyer_user', JSON.stringify(buyer));
+        window.location.href = 'buyer-dashboard.html';
+      } else if (role === 'supplier') {
+        if (window.VayalXAuth) {
+          try {
+            await window.VayalXAuth.fastTrackLogin({
+              name: 'Tamil Agro Supplies',
+              email: 'tamilagro.rentals@vayalx.demo',
+              mobile: '9876543212',
+              role: 'supplier',
+              businessName: 'Tamil Agro Machinery Fleet',
+              supplierType: 'Machinery & Equipment Rental',
+              district: 'Coimbatore'
+            });
+          } catch (e) {
+            console.warn('[VAYALX Auth] Fast track notice:', e.message);
+          }
+        }
+        const supplier = { name: 'Tamil Agro Supplies', phone: '94431 88210', district: 'Coimbatore', category: 'Farm Equipment', role: 'supplier', org: 'Tamil Agro Machinery Fleet' };
+        localStorage.setItem('vayalx_supplier_user', JSON.stringify(supplier));
+        window.location.href = 'supplier-dashboard.html';
+      }
+    }
+
+    // Initialize UI on load
+    updateLanguageUI();
+  </script>
+</body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VAYALX - Supplier Portal Login for Farm Equipment Rental, Seeds, Fertilizers, and Agri Tech Providers." />
+  <title>VAYALX &ndash; Supplier Portal Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="api.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --soil: #2D2416;
+      --growth: #2ECC71;
+      --growth-dk: #27ae60;
+      --sky: #3498DB;
+      --harvest: #F39C12;
+      --harvest-dk: #D68910;
+      --bg: #0F1A12;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --border: #E2E8F0;
+      --text: #1E293B;
+      --muted: #64748B;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Tamil', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      background: radial-gradient(circle at 10% 20%, rgba(243, 156, 18, 0.22) 0%, transparent 45%),
+                  radial-gradient(circle at 90% 80%, rgba(46, 204, 113, 0.18) 0%, transparent 45%),
+                  linear-gradient(135deg, #1e190d 0%, #0c140e 100%);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+    header {
+      padding: 20px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo span { color: var(--harvest); }
+    .logo-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: rgba(243, 156, 18, 0.2);
+      color: var(--harvest);
+      border: 1px solid rgba(243, 156, 18, 0.4);
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .btn-lang {
+      padding: 7px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s;
+    }
+    .btn-lang:hover { background: rgba(255, 255, 255, 0.2); }
+    .btn-lang span.active {
+      background: var(--harvest);
+      color: #fff;
+      padding: 2px 7px;
+      border-radius: 5px;
+    }
+    .back-nav {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 700;
+      transition: all 0.18s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 7px 14px;
+      border-radius: 8px;
+    }
+    .back-nav:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateX(-2px);
+    }
+
+    main {
+      position: relative;
+      z-index: 10;
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 10px 24px 40px;
+      width: 100%;
+    }
+
+    .hackathon-banner {
+      background: linear-gradient(90deg, rgba(243, 156, 18, 0.22), rgba(46, 204, 113, 0.18));
+      border: 1px solid rgba(243, 156, 18, 0.4);
+      border-radius: 12px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #E2E8F0;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+    .hb-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+    }
+    .hb-badge {
+      background: var(--harvest);
+      color: #0F1A12;
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    @media(max-width: 860px) {
+      .grid-layout { grid-template-columns: 1fr; }
+    }
+
+    .login-box {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 34px 30px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .lb-header { margin-bottom: 24px; }
+    .lb-header h1 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--soil);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .lb-header p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-top: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--soil);
+      margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #FAFAFA;
+      transition: all 0.2s;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--harvest);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+    }
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn-launch {
+      width: 100%;
+      background: linear-gradient(135deg, var(--harvest) 0%, var(--harvest-dk) 100%);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 15px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 24px rgba(243, 156, 18, 0.35);
+      transition: all 0.2s;
+      margin-top: 20px;
+    }
+    .btn-launch:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(243, 156, 18, 0.45);
+    }
+    .btn-launch:active { transform: translateY(0); }
+
+    .bypass-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    .personas-box {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 30px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .pb-head h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pb-head p {
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .persona-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .persona-card:hover {
+      background: rgba(243, 156, 18, 0.2);
+      border-color: rgba(243, 156, 18, 0.5);
+      transform: translateX(4px);
+    }
+    .pc-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .pc-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      flex-shrink: 0;
+    }
+    .pc-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .pc-sub {
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.65);
+      margin-top: 2px;
+    }
+    .pc-tag {
+      font-size: 0.68rem;
+      background: rgba(243, 156, 18, 0.25);
+      color: var(--harvest);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .features-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .feature-pill {
+      font-size: 0.72rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 4px 10px;
+      border-radius: 100px;
+      color: rgba(255, 255, 255, 0.85);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.82rem;
+      position: relative;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">
+      Vayal<span>X</span>
+      <span class="logo-badge">Supplier Portal</span>
+    </a>
+    <div class="top-actions">
+      <a href="login.html" class="back-nav">
+        <span>&larr;</span>
+        <span id="txt-back-portal">Back to Portal Selection</span>
+      </a>
+      <button class="btn-lang" id="lang-toggle" onclick="toggleLanguage()">
+        <span id="lang-en" class="active">EN</span>|<span id="lang-ta">தமிழ்</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div class="hackathon-banner">
+      <div class="hb-content">
+        <span class="hb-badge">🚜 Supplier Portal</span>
+        <span id="txt-banner">🔒 Hackathon Demo Mode – No password or OTP required. Machinery &amp; input management unlocked!</span>
+      </div>
+      <div style="font-weight: 700; font-size: 0.82rem; color: var(--harvest);">100% Free Demo Mode</div>
+    </div>
+
+    <div class="grid-layout">
+      <!-- Direct Custom Sign In -->
+      <div class="login-box">
+        <div class="lb-header">
+          <h1 id="txt-title">🚜 Supplier Portal Login</h1>
+          <p id="txt-desc">Enter business details or select a demo supplier to manage machinery &amp; products.</p>
+        </div>
+
+        <form id="supplier-login-form" onsubmit="handleSupplierLogin(event)">
+          <div class="form-group">
+            <label class="form-label" id="lbl-name">Supplier / Business Name</label>
+            <input type="text" id="supplier-name" class="form-input" value="Tamil Agro Supplies" required placeholder="e.g. Tamil Agro Equipment Fleet">
+          </div>
+
+          <div class="input-row">
+            <div class="form-group">
+              <label class="form-label" id="lbl-phone">Mobile Number</label>
+              <input type="text" id="supplier-phone" class="form-input" value="94431 88210" placeholder="10-digit number">
+            </div>
+            <div class="form-group">
+              <label class="form-label" id="lbl-district">District (TN)</label>
+              <select id="supplier-district" class="form-input">
+                <option value="Coimbatore">Coimbatore (கோவை)</option>
+                <option value="Thanjavur">Thanjavur (தஞ்சாவூர்)</option>
+                <option value="Erode">Erode (ஈரோடு)</option>
+                <option value="Tiruchirappalli">Trichy (திருச்சி)</option>
+                <option value="Salem">Salem (சேலம்)</option>
+                <option value="Madurai">Madurai (மதுரை)</option>
+                <option value="Dindigul">Dindigul (திண்டுக்கல்)</option>
+                <option value="Chennai">Chennai (சென்னை)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="lbl-category">Supplier Category</label>
+            <select id="supplier-category" class="form-input">
+              <option value="Farm Equipment">Farm Equipment &amp; Machinery (வேளாண் இயந்திரங்கள்)</option>
+              <option value="Seeds">Certified Seeds (சான்றளிக்கப்பட்ட விதைகள்)</option>
+              <option value="Fertilizers">Fertilizers &amp; Nutrients (உரங்கள் &amp; நுண்ணூட்டங்கள்)</option>
+              <option value="Pesticides">Crop Protection &amp; Bio-Pesticides (பூச்சி மருந்துகள்)</option>
+              <option value="Irrigation">Drip &amp; Sprinkler Irrigation (சொட்டுநீர் பாசன கருவிகள்)</option>
+              <option value="Organic Inputs">Organic Inputs &amp; Bio-fertilizers (இயற்கை இடுபொருட்கள்)</option>
+              <option value="Agricultural Services">Drone &amp; Custom Agricultural Services (ட்ரோன் &amp; சேவை மையம்)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-launch" id="btn-submit">
+            <span>🚜</span>
+            <span id="txt-launch">Enter VAYALX Supplier Dashboard</span>
+          </button>
+
+          <p class="bypass-note" id="txt-bypass">
+            🔒 Hackathon Demo Mode &bull; No password or OTP required
+          </p>
+        </form>
+      </div>
+
+      <!-- Quick 1-Click Persona Login -->
+      <div class="personas-box">
+        <div>
+          <div class="pb-head">
+            <h2 id="txt-quick-title">⚡ Instant Supplier Personas</h2>
+            <p id="txt-quick-desc">Select any pre-configured supplier profile to test rental fleet management and incoming orders:</p>
+          </div>
+
+          <!-- Persona 1 -->
+          <div class="persona-card" onclick="loginSupplierAs('Tamil Agro Supplies', '94431 88210', 'Coimbatore', 'Farm Equipment', 'Tamil Agro Machinery Fleet')">
+            <div class="pc-left">
+              <div class="pc-avatar">🚜</div>
+              <div>
+                <div class="pc-name">Tamil Agro Supplies (Coimbatore)</div>
+                <div class="pc-sub">Tractors, Rotavators &amp; Drone Fleet Rental</div>
+              </div>
+            </div>
+            <span class="pc-tag">Machinery</span>
+          </div>
+
+          <!-- Persona 2 -->
+          <div class="persona-card" onclick="loginSupplierAs('Delta Farm Inputs', '98425 66712', 'Thanjavur', 'Seeds', 'Delta Certified Seed & DAP Hub')">
+            <div class="pc-left">
+              <div class="pc-avatar">🧪</div>
+              <div>
+                <div class="pc-name">Delta Farm Inputs (Thanjavur)</div>
+                <div class="pc-sub">Certified Paddy Seeds, Bio-Fertilizers &amp; DAP</div>
+              </div>
+            </div>
+            <span class="pc-tag" style="color: #2ECC71; background: rgba(46, 204, 113, 0.2);">Seeds &amp; Fert</span>
+          </div>
+
+          <!-- Persona 3 -->
+          <div class="persona-card" onclick="loginSupplierAs('Kongu Irrigation Solutions', '90034 11980', 'Erode', 'Irrigation', 'Kongu Micro-Drip Systems')">
+            <div class="pc-left">
+              <div class="pc-avatar">💧</div>
+              <div>
+                <div class="pc-name">Kongu Irrigation Solutions (Erode)</div>
+                <div class="pc-sub">100% Gov Subsidy Drip &amp; Solar Pump Sets</div>
+              </div>
+            </div>
+            <span class="pc-tag" style="color: #3498DB; background: rgba(52, 152, 219, 0.2);">Drip Tech</span>
+          </div>
+        </div>
+
+        <div class="features-pill-row">
+          <span class="feature-pill">🚜 Fleet Rental Hub</span>
+          <span class="feature-pill">📦 Inputs Inventory</span>
+          <span class="feature-pill">📋 Booking Approvals</span>
+          <span class="feature-pill">🏛️ Subsidy Partners</span>
+          <span class="feature-pill">🤖 AI Spray Advisor</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    VAYALX &copy; 2026 &bull; Smart Agriculture Innovation for Tamil Nadu &bull; Hackathon Working Prototype
+  </footer>
+
+  <script>
+    let currentLang = localStorage.getItem('vayalx_lang') || 'en';
+
+    const translations = {
+      en: {
+        title: "🚜 Supplier Portal Login",
+        desc: "Enter business details or select a demo supplier to manage machinery & products.",
+        name: "Supplier / Business Name",
+        phone: "Mobile Number",
+        district: "District (TN)",
+        category: "Supplier Category",
+        launch: "Enter VAYALX Supplier Dashboard",
+        bypass: "🔒 Hackathon Demo Mode • No password or OTP required",
+        quickTitle: "⚡ Instant Supplier Personas",
+        quickDesc: "Select any pre-configured supplier profile to test rental fleet management and incoming orders:",
+        banner: "🔒 Hackathon Demo Mode – No password or OTP required. Machinery & input management unlocked!",
+        backPortal: "← Back to Portal Selection"
+      },
+      ta: {
+        title: "🚜 வேளாண் வழங்குநர் உள்நுழைவு",
+        desc: "நிறுவன விவரங்களை உள்ளிடவும் அல்லது மாதிரி சுயவிவரத்தைத் தேர்ந்தெடுக்கவும்.",
+        name: "வழங்குநர் / வணிக பெயர்",
+        phone: "கைபேசி எண்",
+        district: "மாவட்டம் (தமிழ்நாடு)",
+        category: "வழங்குநர் பிரிவு",
+        launch: "வழங்குநர் டாஷ்போர்டுக்குள் செல்க",
+        bypass: "🔒 ஹேக்கத்தான் மாதிரி வடிவம் • கடவுச்சொல் அல்லது OTP தேவையில்லை",
+        quickTitle: "⚡ மாதிரி வழங்குநர் வழியே நுழைக",
+        quickDesc: "இயந்திரங்கள் வாடகை மற்றும் இடுபொருட்கள் மேலாண்மையை சோதிக்க மாதிரி சுயவிவரத்தை தேர்வு செய்யவும்:",
+        banner: "🔒 ஹேக்கத்தான் மாதிரி வடிவம் – கடவுச்சொல் தேவையில்லை. வேளாண் இயந்திரங்கள் தளம் தயார்!",
+        backPortal: "← தளங்கள் தேர்வுக்குத் திரும்புக"
+      }
+    };
+
+    function updateLanguageUI() {
+      const t = translations[currentLang];
+      document.getElementById('txt-title').textContent = t.title;
+      document.getElementById('txt-desc').textContent = t.desc;
+      document.getElementById('lbl-name').textContent = t.name;
+      document.getElementById('lbl-phone').textContent = t.phone;
+      document.getElementById('lbl-district').textContent = t.district;
+      document.getElementById('lbl-category').textContent = t.category;
+      document.getElementById('txt-launch').textContent = t.launch;
+      document.getElementById('txt-bypass').textContent = t.bypass;
+      document.getElementById('txt-quick-title').textContent = t.quickTitle;
+      document.getElementById('txt-quick-desc').textContent = t.quickDesc;
+      document.getElementById('txt-banner').textContent = t.banner;
+      document.getElementById('txt-back-portal').textContent = t.backPortal;
+
+      document.getElementById('lang-en').className = currentLang === 'en' ? 'active' : '';
+      document.getElementById('lang-ta').className = currentLang === 'ta' ? 'active' : '';
+      localStorage.setItem('vayalx_lang', currentLang);
+    }
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'ta' : 'en';
+      updateLanguageUI();
+    }
+
+    async function loginSupplierAs(name, phone, district, category, org) {
+      localStorage.setItem('vayalxRole', 'supplier');
+      const cleanMobile = (phone || '9876543212').replace(/\D/g, '').padEnd(10, '0').substring(0, 10);
+      const email = `${(org || name).toLowerCase().replace(/[^a-z0-9]/g, '')}@vayalx.demo`;
+
+      if (window.VayalXAuth) {
+        try {
+          await window.VayalXAuth.fastTrackLogin({
+            name,
+            email,
+            mobile: cleanMobile,
+            role: 'supplier',
+            businessName: org || name,
+            supplierType: 'Machinery & Equipment Rental',
+            district: district || 'Coimbatore'
+          });
+        } catch (err) {
+          console.warn('[VAYALX Auth] Supplier fast track backend sync notice:', err.message);
+        }
+      }
+
+      const supplier = { name, phone, district, category, org, role: 'supplier', loggedInAt: new Date().toISOString() };
+      localStorage.setItem('vayalx_supplier_user', JSON.stringify(supplier));
+      window.location.href = 'supplier-dashboard.html';
+    }
+
+    async function handleSupplierLogin(e) {
+      e.preventDefault();
+      localStorage.setItem('vayalxRole', 'supplier');
+      const name = document.getElementById('supplier-name').value || 'Tamil Agro Supplies';
+      const phone = document.getElementById('supplier-phone').value || '94431 88210';
+      const district = document.getElementById('supplier-district').value || 'Coimbatore';
+      const category = document.getElementById('supplier-category').value || 'Farm Equipment';
+      const org = name;
+
+      const cleanMobile = phone.replace(/\D/g, '').padEnd(10, '0').substring(0, 10);
+      const email = `${name.toLowerCase().replace(/[^a-z0-9]/g, '') || 'supplier'}@vayalx.demo`;
+
+      if (window.VayalXAuth) {
+        try {
+          await window.VayalXAuth.fastTrackLogin({
+            name,
+            email,
+            mobile: cleanMobile,
+            role: 'supplier',
+            businessName: org,
+            supplierType: 'Machinery & Equipment Rental',
+            district
+          });
+        } catch (err) {
+          console.warn('[VAYALX Auth] Supplier backend sync notice:', err.message);
+        }
+      }
+
+      const supplier = {
+        name,
+        phone,
+        district,
+        category,
+        org,
+        role: 'supplier',
+        loggedInAt: new Date().toISOString()
+      };
+      localStorage.setItem('vayalx_supplier_user', JSON.stringify(supplier));
+      window.location.href = 'supplier-dashboard.html';
+    }
+
+    // Auto-init
+    updateLanguageUI();
+  </script>
+</body>
+</html>

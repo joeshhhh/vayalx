@@ -1,0 +1,11 @@
+{
+  "name": "vayalx-local",
+  "private": true,
+  "scripts": {
+    "local": "node local.js",
+    "frontend": "node server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.2"
+  }
+}

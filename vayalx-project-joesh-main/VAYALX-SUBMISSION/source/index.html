@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="VayalX is the all-in-one smart farming platform for Tamil Nadu farmers. Weather forecasts, AI disease detection, direct buyer marketplace, water management, equipment rental and 16 modules in Tamil and English." />
+<meta name="keywords" content="smart farming, Tamil Nadu, agriculture, AI disease detection, farmer marketplace, water management, VayalX, uzhavan, vivasayam" />
+<meta property="og:title" content="VayalX - Smart Farming Platform for Tamil Nadu" />
+<meta property="og:description" content="Real-time weather, AI crop disease detection, direct buyer connections, and 16 farming modules - in Tamil and English." />
+<title>VayalX &ndash; Smart Farming Made Simple</title>
+<script src="api.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--soil:#2D2416;--soil-mid:#3d3426;--growth:#2ECC71;--growth-dk:#27ae60;
+--sky:#3498DB;--harvest:#F39C12;--bg:#F8F6F1;--border:#E0DDD6;
+--text:#1a1612;--muted:#6b6457;--white:#ffffff;--card-bg:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased;position:relative}
+.site-video-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.site-video-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.9) saturate(1.25) contrast(1.1);opacity:1}
+.site-video-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,32,18,.55) 0%,rgba(14,42,23,.40) 18%,rgba(19,48,31,.26) 55%,rgba(16,38,22,.5) 100%)}
+body > *:not(.site-video-bg){position:relative;z-index:1}
+.container{width:min(1100px, calc(100% - 32px));margin:0 auto}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;border:2px solid transparent;text-decoration:none;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.btn:focus-visible{outline:3px solid var(--growth);outline-offset:3px}
+.btn-primary{background:var(--growth);color:var(--white);border-color:var(--growth)}
+.btn-primary:hover{background:var(--growth-dk);border-color:var(--growth-dk);transform:translateY(-2px);box-shadow:0 6px 20px rgba(46,204,113,.35)}
+.btn-outline{background:transparent;color:var(--soil);border-color:var(--soil)}
+.btn-outline:hover{background:var(--soil);color:var(--white);transform:translateY(-2px);box-shadow:0 6px 24px rgba(45,36,22,.12)}
+.btn-lang{padding:6px 12px;font-size:.82rem;font-weight:700;background:var(--white);border:1.5px solid var(--border);border-radius:6px;color:var(--soil);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.btn-lang:hover{border-color:var(--growth);color:var(--growth-dk)}
+.btn-lang span.active{background:var(--growth);color:var(--white);padding:2px 6px;border-radius:4px}
+section{padding:80px 0}
+.section-label{display:inline-block;font-size:.78rem;font-weight:600;letter-spacing:.04em;color:var(--growth-dk);background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.25);padding:5px 14px;border-radius:100px;margin-bottom:16px}
+@media(prefers-reduced-motion:no-preference){
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+}
+/* HEADER */
+header{position:sticky;top:0;z-index:100;background:rgba(18,42,25,.36);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.18)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:1100px;margin:0 auto;gap:16px}
+.logo-wrap{display:flex;align-items:center;gap:12px}
+.logo{font-size:1.5rem;font-weight:700;color:#f5fff7;text-decoration:none;letter-spacing:-.02em}
+.logo span{color:#7fe39d}
+.logo-tag{font-size:.7rem;font-weight:600;background:rgba(127,227,157,.18);color:#ebfff1;padding:2px 8px;border-radius:4px;display:none}
+@media(min-width:960px){.logo-tag{display:inline-block}}
+nav{display:flex;align-items:center;justify-content:space-between;gap:20px;flex:1}
+.nav-links{display:flex;gap:24px;list-style:none;align-items:center}
+.nav-links a{font-size:.9rem;font-weight:500;color:rgba(255,255,255,.82);text-decoration:none;transition:color .15s}
+.nav-links a:hover{color:#ffffff}
+.nav-actions{display:flex;align-items:center;gap:10px;margin-left:auto;flex-wrap:nowrap}
+.header-btn{padding:8px 14px !important;font-size:.82rem !important;line-height:1.2;border-radius:8px;min-width:0 !important}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--soil);margin:5px 0;transition:.3s}
+/* HERO */
+#hero{padding:84px 0 68px;background:linear-gradient(135deg,rgba(11,43,23,.55) 0%,rgba(18,61,32,.44) 38%,rgba(35,84,53,.26) 100%);overflow:hidden;position:relative;isolation:isolate}
+#hero::before{content:"";position:absolute;top:-120px;right:-120px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(120,238,156,.16) 0%,transparent 70%);pointer-events:none}
+.hero-video-bg{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+.hero-video-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.78) saturate(1.2) contrast(1.08);opacity:.82;transform:scale(1.05)}
+.hero-video-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,33,19,.72) 0%,rgba(14,41,25,.55) 35%,rgba(14,41,25,.22) 100%)}
+#hero .container,.hero-grid{position:relative;z-index:1}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,64px);align-items:center;max-width:1100px;margin:0 auto}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;color:#dcffe5;background:rgba(127,227,157,.14);border:1px solid rgba(159,245,186,.26);padding:6px 14px;border-radius:100px;margin-bottom:20px}
+.hero-headline{font-size:clamp(2.1rem,4vw,3.2rem);font-weight:700;line-height:1.12;letter-spacing:-.03em;color:#f4fff7;margin-bottom:20px;max-width:520px}
+.hero-headline strong{color:#9ef0af}
+.hero-sub{font-size:1.06rem;color:rgba(244,255,247,.84);max-width:520px;margin-bottom:34px;line-height:1.7}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:36px;align-items:center}
+.hero-trust{display:flex;align-items:center;gap:12px;font-size:.85rem;color:var(--muted)}
+.trust-avatars{display:flex}
+.trust-avatar{width:32px;height:32px;border-radius:50%;border:2px solid var(--white);background:var(--growth);color:var(--white);font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-left:-8px}
+.trust-avatar:first-child{margin-left:0}
+.trust-avatar:nth-child(2){background:var(--sky)}
+.trust-avatar:nth-child(3){background:var(--harvest)}
+.hero-visual{position:relative;display:flex;align-items:center;justify-content:center}
+.hero-phone{width:288px;background:var(--white);border-radius:32px;padding:22px 18px;box-shadow:0 24px 70px rgba(45,36,22,.16),0 4px 16px rgba(45,36,22,.08);position:relative;border:1px solid var(--border)}
+.phone-notch{width:76px;height:9px;background:var(--soil);border-radius:100px;margin:0 auto 18px}
+.phone-header{background:var(--soil);border-radius:12px;padding:12px 14px;margin-bottom:12px;color:var(--white)}
+.phone-header .ph-label{font-size:.65rem;opacity:.65;text-transform:uppercase;letter-spacing:.05em}
+.phone-header .ph-title{font-size:.95rem;font-weight:700;margin-top:2px}
+.phone-header .ph-loc{font-size:.72rem;color:rgba(255,255,255,.75);margin-top:2px}
+.phone-weather{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px}
+.weather-tile{background:var(--bg);border-radius:9px;padding:9px 10px;border:1px solid var(--border)}
+.weather-tile .wt-icon{font-size:1.2rem}
+.weather-tile .wt-val{font-size:.95rem;font-weight:700;color:var(--soil);margin-top:2px}
+.weather-tile .wt-lbl{font-size:.62rem;color:var(--muted)}
+.phone-alert{background:rgba(243,156,18,.08);border:1px solid rgba(243,156,18,.3);border-left:3px solid var(--harvest);border-radius:8px;padding:9px 11px;margin-bottom:12px}
+.phone-alert .pa-title{font-size:.74rem;font-weight:700;color:var(--harvest)}
+.phone-alert .pa-body{font-size:.68rem;color:var(--muted);margin-top:2px;line-height:1.35}
+.phone-modules{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mod-chip{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 4px;text-align:center;font-size:.58rem;color:var(--muted);font-weight:600}
+.mod-chip .mc-icon{font-size:.95rem;display:block;margin-bottom:2px}
+.hero-badge{position:absolute;top:-14px;right:-18px;background:var(--growth);color:var(--white);font-size:.72rem;font-weight:700;padding:7px 14px;border-radius:100px;box-shadow:0 4px 14px rgba(46,204,113,.4);white-space:nowrap}
+.hero-badge-bottom{position:absolute;bottom:-14px;left:-16px;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:9px 14px;box-shadow:0 6px 20px rgba(45,36,22,.12);font-size:.72rem}
+.hero-badge-bottom strong{color:var(--soil);display:block;font-size:.88rem}
+/* PROJECT OVERVIEW */
+.project-overview{background:rgba(255,255,255,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid rgba(45,36,22,.08);border-bottom:1px solid rgba(45,36,22,.08)}
+.project-overview-inner{display:grid;grid-template-columns:1.3fr .7fr;gap:28px;align-items:center}
+.project-copy{padding:36px 0}
+.project-copy .section-label{margin-bottom:16px}
+.project-copy h2{font-size:clamp(1.9rem,3vw,2.5rem);font-weight:700;color:var(--soil);line-height:1.2;letter-spacing:-.02em;margin-bottom:18px}
+.project-copy p{color:var(--muted);font-size:1rem;line-height:1.8;max-width:620px}
+.project-points{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;list-style:none;margin-top:26px}
+.project-point{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 16px;box-shadow:0 6px 18px rgba(45,36,22,.04)}
+.project-point .pp-number{display:inline-block;font-size:.7rem;font-weight:700;color:var(--growth-dk);background:rgba(46,204,113,.08);padding:5px 10px;border-radius:100px;margin-bottom:10px}
+.project-point strong{display:block;color:var(--soil);font-size:1rem;margin-bottom:8px}
+.project-point span{color:var(--muted);font-size:.82rem;line-height:1.6}
+.project-quote{background:linear-gradient(135deg,var(--soil) 0%,var(--soil-mid) 100%);color:var(--white);border-radius:20px;padding:28px 24px;box-shadow:0 16px 44px rgba(45,36,22,.18)}
+.project-quote .q-label{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.08);padding:6px 10px;border-radius:100px;color:rgba(255,255,255,.8)}
+.project-quote blockquote{margin:18px 0;font-size:1.1rem;line-height:1.7;color:rgba(255,255,255,.92)}
+.project-quote .q-author{font-size:.8rem;color:rgba(255,255,255,.7)}
+/* FEATURES */
+#features{background:var(--white)}
+.features-header{text-align:center;margin-bottom:52px}
+.features-header h2{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--soil);margin-bottom:12px;letter-spacing:-.02em}
+.features-header p{color:var(--muted);max-width:580px;margin:0 auto;font-size:1.02rem}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feature-card{border:1px solid var(--border);border-left:4px solid var(--growth);background:var(--white);padding:26px 22px;transition:box-shadow .2s,transform .2s}
+.feature-card:hover{box-shadow:0 6px 24px rgba(45,36,22,.12);transform:translateY(-3px)}
+.feature-card:nth-child(2){border-left-color:var(--sky)}
+.feature-card:nth-child(3){border-left-color:var(--harvest)}
+.feature-card:nth-child(4){border-left-color:#9b59b6}
+.feature-card:nth-child(5){border-left-color:#e74c3c}
+.feature-card:nth-child(6){border-left-color:var(--growth-dk)}
+.fc-icon{font-size:1.8rem;margin-bottom:12px;display:block}
+.fc-title{font-size:1.05rem;font-weight:700;color:var(--soil);margin-bottom:10px}
+.fc-body{font-size:.9rem;color:var(--muted);line-height:1.6}
+.feature-tag{font-size:.7rem;font-weight:600;color:var(--growth-dk);background:rgba(46,204,113,.08);padding:3px 10px;border-radius:100px;margin-bottom:10px;display:inline-block}
+.features-lang-note{text-align:center;margin-top:44px;padding:18px 24px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:.95rem;color:var(--muted)}
+.features-lang-note strong{color:var(--soil)}
+/* MODULES */
+#modules{background:var(--bg)}
+.modules-header{text-align:center;margin-bottom:36px}
+.modules-header h2{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--soil);margin-bottom:12px;letter-spacing:-.02em}
+.modules-header p{color:var(--muted);max-width:580px;margin:0 auto}
+.modules-filter{display:flex;justify-content:center;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+.mod-filter-btn{background:var(--white);border:1px solid var(--border);border-radius:100px;padding:6px 16px;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
+.mod-filter-btn:hover{color:var(--soil);border-color:var(--growth)}
+.mod-filter-btn.active{background:var(--soil);color:var(--white);border-color:var(--soil)}
+.modules-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.module-card{cursor:pointer;background:var(--white);border:1px solid var(--border);border-top:3px solid var(--growth);padding:20px 16px;transition:box-shadow .2s,transform .2s}
+.module-card:hover{box-shadow:0 6px 20px rgba(45,36,22,.12);transform:translateY(-3px)}
+.module-card:nth-child(2){border-top-color:var(--sky)}
+.module-card:nth-child(3){border-top-color:var(--harvest)}
+.module-card:nth-child(4){border-top-color:#e74c3c}
+.module-card:nth-child(5){border-top-color:#1abc9c}
+.module-card:nth-child(6){border-top-color:#9b59b6}
+.module-card:nth-child(7){border-top-color:#27ae60}
+.module-card:nth-child(8){border-top-color:#e67e22}
+.module-card:nth-child(9){border-top-color:#3498db}
+.module-card:nth-child(10){border-top-color:#f39c12}
+.module-card:nth-child(11){border-top-color:#d35400}
+.module-card:nth-child(12){border-top-color:#8e44ad}
+.module-card:nth-child(13){border-top-color:#2ecc71}
+.module-card:nth-child(14){border-top-color:#2980b9}
+.module-card:nth-child(15){border-top-color:#16a085}
+.module-card:nth-child(16){border-top-color:var(--soil)}
+.mc-num{font-size:.68rem;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
+.mc-head{display:flex;align-items:flex-start;gap:8px;margin-bottom:10px}
+.mc-emoji{font-size:1.35rem;line-height:1;flex-shrink:0}
+.mc-name{font-size:.92rem;font-weight:700;color:var(--soil);line-height:1.3}
+.mc-features{list-style:none}
+.mc-features li{font-size:.76rem;color:var(--muted);padding:2.5px 0;padding-left:14px;position:relative;line-height:1.4}
+.mc-features li::before{content:"\2192";position:absolute;left:0;color:var(--growth);font-size:.7rem}
+/* BENEFITS */
+#benefits{background:var(--white)}
+.benefits-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.benefits-col h2{font-size:clamp(1.8rem,3vw,2.4rem);font-weight:700;color:var(--soil);margin-bottom:28px;letter-spacing:-.02em}
+.benefit-list{list-style:none;display:flex;flex-direction:column;gap:20px}
+.benefit-item{display:flex;align-items:flex-start;gap:14px}
+.benefit-check{flex-shrink:0;width:26px;height:26px;background:var(--growth);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin-top:2px}
+.benefit-text strong{color:var(--soil);font-size:.98rem}
+.benefit-text p{color:var(--muted);font-size:.88rem;margin-top:2px}
+.stats-box{background:linear-gradient(135deg,var(--sky) 0%,var(--growth) 100%);border-radius:16px;padding:36px 32px;color:var(--white);box-shadow:0 16px 44px rgba(52,152,219,.22)}
+.stat-main{font-size:3.8rem;font-weight:700;letter-spacing:-.04em;line-height:1;margin-bottom:6px}
+.stat-main-label{font-size:.96rem;opacity:.92;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.2)}
+.stat-secondary{display:flex;flex-direction:column;gap:14px}
+.stat-row{display:flex;align-items:flex-start;gap:12px}
+.stat-icon{font-size:1.2rem;flex-shrink:0}
+.stat-row-text strong{font-size:1.02rem;display:block}
+.stat-row-text span{font-size:.8rem;opacity:.85}
+/* TESTIMONIALS */
+#testimonials{background:var(--bg)}
+.testimonials-header{text-align:center;margin-bottom:44px}
+.testimonials-header h2{font-size:clamp(1.8rem,3vw,2.4rem);font-weight:700;color:var(--soil);margin-bottom:10px;letter-spacing:-.02em}
+.testimonials-header p{color:var(--muted)}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.testimonial-card{background:var(--white);border:1px solid var(--border);border-left:4px solid var(--growth);padding:26px 22px;transition:box-shadow .2s,transform .2s}
+.testimonial-card:hover{box-shadow:0 6px 24px rgba(45,36,22,.12);transform:translateY(-3px)}
+.testimonial-card:nth-child(2){border-left-color:var(--sky)}
+.testimonial-card:nth-child(3){border-left-color:var(--harvest)}
+.tc-stars{color:#f1c40f;font-size:.88rem;margin-bottom:12px}
+.tc-quote{font-size:.92rem;color:var(--text);line-height:1.65;margin-bottom:18px;font-style:italic}
+.tc-quote::before{content:"\201C";font-size:1.4em;color:var(--growth);font-style:normal}
+.tc-quote::after{content:"\201D";font-size:1.4em;color:var(--growth);font-style:normal}
+.tc-author{display:flex;align-items:center;gap:12px}
+.tc-avatar{width:40px;height:40px;border-radius:50%;background:var(--growth);color:var(--white);font-weight:700;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.testimonial-card:nth-child(2) .tc-avatar{background:var(--sky)}
+.testimonial-card:nth-child(3) .tc-avatar{background:var(--harvest)}
+.tc-name{font-weight:700;color:var(--soil);font-size:.92rem}
+.tc-role{font-size:.78rem;color:var(--muted)}
+/* EARLY ACCESS */
+#early-access{background:var(--white);border-top:1px solid var(--border)}
+.ea-inner{max-width:640px;margin:0 auto;text-align:center}
+.ea-inner h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;color:var(--soil);margin-bottom:12px;letter-spacing:-.02em}
+.ea-inner > p{color:var(--muted);margin-bottom:30px;font-size:1rem}
+.ea-form{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}
+.ea-input{flex:1;min-width:240px;padding:13px 16px;border:2px solid var(--border);border-radius:6px;font-size:1rem;font-family:inherit;background:var(--bg);color:var(--text);transition:border-color .18s;outline:none}
+.ea-input:focus{border-color:var(--growth)}
+.ea-note{font-size:.82rem;color:var(--muted)}
+.ea-note span{color:var(--growth-dk);font-weight:600}
+.ea-success{display:none;padding:16px 22px;background:rgba(46,204,113,.08);border:1px solid rgba(46,204,113,.3);border-radius:6px;color:var(--growth-dk);font-weight:600;margin-top:16px}
+/* FINAL CTA */
+#cta-final{background:linear-gradient(135deg,var(--soil) 0%,var(--soil-mid) 100%);padding:88px 0;text-align:center}
+#cta-final h2{font-size:clamp(2rem,4vw,2.8rem);font-weight:700;color:var(--white);margin-bottom:16px;letter-spacing:-.03em}
+#cta-final > div > p{color:rgba(255,255,255,.75);max-width:520px;margin:0 auto 34px;font-size:1.02rem}
+.cta-final-badges{display:flex;justify-content:center;gap:12px;margin-top:34px;flex-wrap:wrap}
+.cfb{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.82);padding:7px 16px;border-radius:100px;font-size:.8rem}
+/* FOOTER */
+footer{background:var(--soil);color:rgba(255,255,255,.65);padding:36px 24px;text-align:center}
+.footer-logo{font-size:1.4rem;font-weight:700;color:var(--white);letter-spacing:-.02em;margin-bottom:12px;display:block}
+.footer-logo span{color:var(--growth)}
+.footer-line{font-size:.86rem;margin:6px 0;line-height:1.6}
+.footer-tamil{font-size:.88rem;color:rgba(255,255,255,.55);margin-top:10px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1)}
+.footer-links{display:flex;justify-content:center;gap:22px;margin:14px 0}
+.footer-links a{color:rgba(255,255,255,.55);text-decoration:none;font-size:.84rem;transition:color .15s}
+.footer-links a:hover{color:var(--growth)}
+/* RESPONSIVE */
+@media(max-width:960px){.modules-grid{grid-template-columns:repeat(2,1fr)}.features-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){
+section{padding:54px 0}
+.hero-grid{grid-template-columns:1fr;gap:44px}
+.hero-headline{font-size:2rem}
+.hero-visual{order:-1}
+.hero-phone{width:260px}
+.hero-badge{top:-10px;right:0}
+.hero-badge-bottom{bottom:-10px;left:0}
+.benefits-grid{grid-template-columns:1fr}
+.testimonials-grid{grid-template-columns:1fr}
+.features-grid{grid-template-columns:1fr}
+.modules-grid{grid-template-columns:1fr}
+.nav-links{display:none}
+.nav-links.open{display:flex;flex-direction:column;position:absolute;top:62px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);padding:20px 24px;gap:16px;z-index:99;box-shadow:0 12px 24px rgba(45,36,22,.08)}
+.hamburger{display:block}
+.ea-form{flex-direction:column}
+.ea-input{min-width:100%}
+}
+@media(max-width:480px){
+.hero-ctas{flex-direction:column}
+.btn{justify-content:center}
+.stat-main{font-size:3rem}
+}
+</style>
+</head>
+<body>
+<div class="site-video-bg" aria-hidden="true">
+  <video autoplay muted loop playsinline preload="auto">
+    <source src="project-video.mp4" type="video/mp4" />
+  </video>
+  <div class="site-video-overlay"></div>
+</div>
+<!-- HEADER -->
+<header id="top-header">
+<div class="header-inner">
+<div class="logo-wrap">
+<a href="#" class="logo">Vayal<span>X</span></a>
+<span class="logo-tag" data-i18n="tag">Smart Farming TN</span>
+</div>
+<nav>
+<ul class="nav-links" id="nav-links">
+<li><a href="#features" data-i18n="nav1">Features</a></li>
+<li><a href="#modules" data-i18n="nav2">All 16 Modules</a></li>
+<li><a href="#benefits" data-i18n="nav3">Benefits</a></li>
+<li><a href="#testimonials" data-i18n="nav4">Farmers</a></li>
+</ul>
+<div class="nav-actions">
+<button class="btn-lang" id="lang-toggle" aria-label="Switch language between English and Tamil">
+<span id="lang-en" class="active">EN</span>|<span id="lang-ta">தமிழ்</span>
+</button>
+<a href="login.html" class="btn btn-outline header-btn" aria-label="Sign in">Sign in</a>
+<a href="login.html" class="btn btn-primary header-btn" id="header-cta" aria-label="Enter Portal">Enter Portal</a>
+<button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+</div>
+</nav>
+</div>
+</header>
+<!-- HERO -->
+<section id="hero">
+<div class="container">
+<div class="hero-grid">
+<div>
+<div class="hero-eyebrow" data-i18n="hero_eyebrow">&#127807; Smart farming for Tamil Nadu</div>
+<h1 class="hero-headline" id="hero-title">Smart farming made<br>simple for <strong>you</strong></h1>
+<p class="hero-sub" data-i18n="hero_sub">Real-time weather alerts, disease detection, water management, direct buyer connections &mdash; all in Tamil and English, powered by AI.</p>
+<div class="hero-ctas">
+<a href="login.html" class="btn btn-primary" id="hero-cta-primary">🚀 Choose Portal (Free Demo)</a>
+<a href="dashboard.html" class="btn btn-outline" id="hero-cta-secondary">⚡ Farmer Dashboard</a>
+</div>
+<div class="hero-trust">
+<div class="trust-avatars">
+<div class="trust-avatar">MS</div>
+<div class="trust-avatar">RA</div>
+<div class="trust-avatar">KN</div>
+</div>
+<span data-i18n="hero_trust">2,000+ farmers in early testing &middot; Tamil Nadu</span>
+</div>
+</div>
+<div class="hero-visual">
+<div class="hero-phone">
+<div class="phone-notch"></div>
+<div class="phone-header">
+<div class="ph-label">VayalX &middot; Live Dashboard</div>
+<div class="ph-title">Good morning, Muthu &#128075;</div>
+<div class="ph-loc">&#128205; Coimbatore, Tamil Nadu</div>
+</div>
+<div class="phone-weather">
+<div class="weather-tile"><div class="wt-icon">&#127777;&#65039;</div><div class="wt-val">32&deg;C</div><div class="wt-lbl">Temperature</div></div>
+<div class="weather-tile"><div class="wt-icon">&#128167;</div><div class="wt-val">68%</div><div class="wt-lbl">Humidity</div></div>
+<div class="weather-tile"><div class="wt-icon">&#127783;&#65039;</div><div class="wt-val">40%</div><div class="wt-lbl">Rain chance</div></div>
+<div class="weather-tile"><div class="wt-icon">&#128168;</div><div class="wt-val">12 km/h</div><div class="wt-lbl">Wind speed</div></div>
+</div>
+<div class="phone-alert">
+<div class="pa-title">&#9888;&#65039; Irrigation Alert</div>
+<div class="pa-body">Rain expected in 6 hrs. Hold irrigation on tomato field today.</div>
+</div>
+<div class="phone-modules">
+<div class="mod-chip"><span class="mc-icon">&#128269;</span>Disease<br>Detect</div>
+<div class="mod-chip"><span class="mc-icon">&#128176;</span>Market<br>Price</div>
+<div class="mod-chip"><span class="mc-icon">&#129302;</span>AI<br>Chat</div>
+<div class="mod-chip"><span class="mc-icon">&#127807;</span>Soil<br>Scan</div>
+<div class="mod-chip"><span class="mc-icon">&#128665;</span>Equipment<br>Rent</div>
+<div class="mod-chip"><span class="mc-icon">&#127963;&#65039;</span>Gov<br>Schemes</div>
+</div>
+</div>
+<div class="hero-badge">16 modules &middot; Tamil + English</div>
+<div class="hero-badge-bottom"><strong>30% less water</strong>Early adopters, Erode district</div>
+</div>
+</div>
+</div>
+</section>
+<section class="project-overview">
+<div class="container project-overview-inner">
+<div class="project-copy">
+<div class="section-label">About VayalX</div>
+<h2>Built for Tamil Nadu farmers who need smarter decisions every day.</h2>
+<p>VayalX is an AI-powered smart farming platform designed to help farmers make faster, better decisions from planting to harvest. It connects real-time weather information, crop health insights, irrigation guidance, market prices, and direct buyer access in one simple dashboard.</p>
+<p>Instead of relying on guesswork, farmers can use instant disease detection, seasonal planning, water-saving recommendations, and local market intelligence to reduce losses, save money, and improve crop yield.</p>
+<ul class="project-points">
+<li class="project-point">
+<span class="pp-number">01</span>
+<strong>Problem</strong>
+<span>Farmers often face unpredictable rainfall, crop stress, and poor price visibility without clear local support.</span>
+</li>
+<li class="project-point">
+<span class="pp-number">02</span>
+<strong>Solution</strong>
+<span>VayalX combines AI, weather, and market data into a practical farming assistant for real-world decisions.</span>
+</li>
+<li class="project-point">
+<span class="pp-number">03</span>
+<strong>Impact</strong>
+<span>Better planning, lower water waste, better yields, and stronger farm income through smarter daily operations.</span>
+</li>
+</ul>
+</div>
+<div class="project-quote">
+<div class="q-label">Project Mission</div>
+<blockquote>“To empower farmers with actionable digital support in Tamil and English, so every field gets the right advice at the right time.”</blockquote>
+<div class="q-author">VayalX &ndash; Smart Farming for Tamil Nadu</div>
+</div>
+</div>
+</section>
+<!-- FEATURES 6 CORE -->
+<section id="features">
+<div class="container">
+<div class="features-header">
+<div class="section-label" data-i18n="feat_label">Core Features</div>
+<h2 data-i18n="feat_title">Built for your farm</h2>
+<p data-i18n="feat_sub">Everything a farmer needs to grow better crops, save water, reduce disease loss, and get fair prices &mdash; in one app.</p>
+</div>
+<div class="features-grid">
+<div class="feature-card fade-up">
+<span class="feature-tag" data-i18n="f1_tag">Weather &amp; Alerts</span>
+<span class="fc-icon">&#127780;&#65039;</span>
+<div class="fc-title" data-i18n="f1_title">Weather Forecast</div>
+<p class="fc-body" data-i18n="f1_desc">10+ locations across Tamil Nadu. Rain prediction, temperature, humidity, wind speed. Get alerts exactly when you need to act &mdash; before the rain, not after.</p>
+</div>
+<div class="feature-card fade-up">
+<span class="feature-tag" data-i18n="f2_tag">AI-Powered</span>
+<span class="fc-icon">&#128269;</span>
+<div class="fc-title" data-i18n="f2_title">Disease Detection</div>
+<p class="fc-body" data-i18n="f2_desc">Upload a photo of your crop leaf. Our AI identifies disease in seconds &mdash; powdery mildew, blight, rust, and more. Get treatment suggestions instantly. No lab visit needed.</p>
+</div>
+<div class="feature-card fade-up">
+<span class="feature-tag" data-i18n="f3_tag">Save Water</span>
+<span class="fc-icon">&#128167;</span>
+<div class="fc-title" data-i18n="f3_title">Smart Water Management</div>
+<p class="fc-body" data-i18n="f3_desc">Track water usage across your field. Get irrigation suggestions timed to weather forecasts. Save water, save money, grow better crops &mdash; all in one place.</p>
+</div>
+<div class="feature-card fade-up">
+<span class="feature-tag" data-i18n="f4_tag">Record Keeping</span>
+<span class="fc-icon">&#128202;</span>
+<div class="fc-title" data-i18n="f4_title">Farm Records</div>
+<p class="fc-body" data-i18n="f4_desc">Log crops, expenses, and harvests season by season. Searchable records so you always know what worked &mdash; and what didn&apos;t &mdash; last season.</p>
+</div>
+<div class="feature-card fade-up">
+<span class="feature-tag" data-i18n="f5_tag">Fair Prices</span>
+<span class="fc-icon">&#128176;</span>
+<div class="fc-title" data-i18n="f5_title">Market Updates &amp; Direct Sales</div>
+<p class="fc-body" data-i18n="f5_desc">Daily prices for fruits, vegetables, and seeds across Tamil Nadu markets. Connect directly with buyers. No middlemen. No agents. Fair price for your harvest.</p>
+</div>
+<div class="feature-card fade-up">
+<span class="feature-tag" data-i18n="f6_tag">Tamil + English</span>
+<span class="fc-icon">&#129302;</span>
+<div class="fc-title" data-i18n="f6_title">AI Chatbot (Farmer Assistant)</div>
+<p class="fc-body" data-i18n="f6_desc">Ask anything about farming, crop care, disease queries, or market prices. Like ChatGPT and Gemini specialized for farmers. Voice input and voice response included.</p>
+</div>
+</div>
+<div class="features-lang-note">
+<strong>Tamil + English</strong> support built in. Switch anytime. Your language, your farm. &nbsp;|&nbsp;
+<strong>தமிழ் + ஆங்கிலம்</strong> இரண்டிலும் பயன்படுத்தலாம்.
+</div>
+</div>
+</section>
+<!-- ALL 16 MODULES -->
+<section id="modules">
+<div class="container">
+<div class="modules-header">
+<div class="section-label">All 16 Modules</div>
+<h2 data-i18n="mod_title">One platform. Everything your farm needs.</h2>
+<p data-i18n="mod_sub">VayalX packs 16 powerful farming modules into a single app &mdash; from soil to sale, from seedling to harvest.</p>
+</div>
+<div class="modules-filter">
+<button class="mod-filter-btn active" data-filter="all">All 16 Modules</button>
+<button class="mod-filter-btn" data-filter="crops">Crop &amp; Soil</button>
+<button class="mod-filter-btn" data-filter="market">Market &amp; Trade</button>
+<button class="mod-filter-btn" data-filter="tech">Smart Tech &amp; AI</button>
+</div>
+<div class="modules-grid" id="modules-container">
+<div class="module-card fade-up" data-category="tech">
+<div class="mc-num">Module 01</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#127780;&#65039;</span><div class="mc-name">Weather Forecast</div></div>
+<ul class="mc-features"><li>10+ TN locations</li><li>Rain prediction</li><li>Temperature &amp; humidity</li><li>Wind speed &amp; alerts</li></ul>
+</div>
+<div class="module-card fade-up" data-category="crops">
+<div class="mc-num">Module 02</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#127806;</span><div class="mc-name">Crop Management</div></div>
+<ul class="mc-features"><li>Crop selection guide</li><li>Planting calendar</li><li>Growth stage tracking</li><li>Seasonal planning</li></ul>
+</div>
+<div class="module-card fade-up" data-category="crops">
+<div class="mc-num">Module 03</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#128167;</span><div class="mc-name">Smart Water Management</div></div>
+<ul class="mc-features"><li>Water usage tracking</li><li>Irrigation suggestions</li><li>Water saving tips</li><li>Weather sync alerts</li></ul>
+</div>
+<div class="module-card fade-up" data-category="crops">
+<div class="mc-num">Module 04</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#129440;</span><div class="mc-name">AI Crop Disease Detection</div></div>
+<ul class="mc-features"><li>Upload crop/leaf photo</li><li>Instant disease detection</li><li>Treatment suggestions</li><li>Prevention methods</li></ul>
+</div>
+<div class="module-card fade-up" data-category="crops">
+<div class="mc-num">Module 05</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#127807;</span><div class="mc-name">Soil Health Scanner</div></div>
+<ul class="mc-features"><li>Soil type analysis</li><li>Fertilizer recommendations</li><li>Suitable crop suggestions</li><li>Nutrient balance tips</li></ul>
+</div>
+<div class="module-card fade-up" data-category="crops">
+<div class="mc-num">Module 06</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#128202;</span><div class="mc-name">Farm Record Management</div></div>
+<ul class="mc-features"><li>Crop records</li><li>Expense records</li><li>Harvest records</li><li>Search &amp; filter options</li></ul>
+</div>
+<div class="module-card fade-up" data-category="market">
+<div class="mc-num">Module 07</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#128185;</span><div class="mc-name">Daily Market Price Updates</div></div>
+<ul class="mc-features"><li>Fruits daily prices</li><li>Vegetables prices</li><li>Seeds market prices</li><li>Daily updated TN mandis</li></ul>
+</div>
+<div class="module-card fade-up" data-category="market">
+<div class="mc-num">Module 08</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#128230;</span><div class="mc-name">Smart Pre-Booking System</div></div>
+<ul class="mc-features"><li>Fruits, veg &amp; seeds booking</li><li>Quantity selection</li><li>Booking date picker</li><li>Auto price calculation &amp; confirm</li></ul>
+</div>
+<div class="module-card fade-up" data-category="tech">
+<div class="mc-num">Module 09</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#129302;</span><div class="mc-name">VayalX AI Chatbot</div></div>
+<ul class="mc-features"><li>Tamil &amp; English chat support</li><li>Voice input &amp; voice response</li><li>Farming guidance &amp; crop advice</li><li>Disease &amp; market queries</li></ul>
+</div>
+<div class="module-card fade-up" data-category="market">
+<div class="mc-num">Module 10</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#128665;</span><div class="mc-name">Equipment Sharing &amp; Rental</div></div>
+<ul class="mc-features"><li>Tractor rental</li><li>Farm equipment rental</li><li>Rental duration selection</li><li>Automatic cost calculation</li></ul>
+</div>
+<div class="module-card fade-up" data-category="tech">
+<div class="mc-num">Module 11</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#128276;</span><div class="mc-name">Smart Alert System</div></div>
+<ul class="mc-features"><li>Weather emergency alerts</li><li>Crop disease warnings</li><li>Market price spikes</li><li>Pre-booking notifications</li></ul>
+</div>
+<div class="module-card fade-up" data-category="tech">
+<div class="mc-num">Module 12</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#127963;&#65039;</span><div class="mc-name">Govt Schemes &amp; Subsidies Hub</div></div>
+<ul class="mc-features"><li>Tamil &amp; English details</li><li>Eligibility checker</li><li>Subsidy amount details</li><li>Application step guidance</li></ul>
+</div>
+<div class="module-card fade-up" data-category="crops">
+<div class="mc-num">Module 13</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#127806;</span><div class="mc-name">New Farmer Guidance Center</div></div>
+<ul class="mc-features"><li>Beginner farming guide</li><li>Crop selection advisory</li><li>Harvesting practical tips</li><li>Step-by-step instructions</li></ul>
+</div>
+<div class="module-card fade-up" data-category="market">
+<div class="mc-num">Module 14</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#129309;</span><div class="mc-name">Farmer-Buyer Direct Marketplace</div></div>
+<ul class="mc-features"><li>Farmers list products</li><li>Buyers connect directly</li><li>Direct order placement</li><li>No middlemen commission</li></ul>
+</div>
+<div class="module-card fade-up" data-category="tech">
+<div class="mc-num">Module 15</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#127758;</span><div class="mc-name">Tamil Farmer Community</div></div>
+<ul class="mc-features"><li>Farmer community forum</li><li>Regional crop grower groups</li><li>Expert Q&amp;A sessions</li><li>Peer advice in Tamil</li></ul>
+</div>
+<div class="module-card fade-up" data-category="tech">
+<div class="mc-num">Module 16</div><span style="float:right;font-size:0.65rem;color:var(--growth-dk);font-weight:700;">Open →</span>
+<div class="mc-head"><span class="mc-emoji">&#128203;</span><div class="mc-name">Farmer Dashboard</div></div>
+<ul class="mc-features"><li>Total revenue overview</li><li>Total expenses tracking</li><li>Crop status monitors</li><li>Active bookings &amp; trends</li></ul>
+</div>
+</div>
+</div>
+</section>
+<!-- BENEFITS -->
+<section id="benefits">
+<div class="container">
+<div class="benefits-grid">
+<div class="benefits-col">
+<div class="section-label" data-i18n="ben_label">Why VayalX</div>
+<h2 data-i18n="ben_title">Why farmers choose VayalX</h2>
+<ul class="benefit-list">
+<li class="benefit-item fade-up">
+<div class="benefit-check">&#10003;</div>
+<div class="benefit-text"><strong data-i18n="b1_title">Stop guessing.</strong><p data-i18n="b1_desc">Real weather data and alerts mean you&apos;re always one step ahead &mdash; not reacting after the damage is done.</p></div>
+</li>
+<li class="benefit-item fade-up">
+<div class="benefit-check">&#10003;</div>
+<div class="benefit-text"><strong data-i18n="b2_title">Catch disease early.</strong><p data-i18n="b2_desc">Identify crop problems &mdash; powdery mildew, blight, rust &mdash; before they spread. Save your tomatoes, sugarcane, and harvest.</p></div>
+</li>
+<li class="benefit-item fade-up">
+<div class="benefit-check">&#10003;</div>
+<div class="benefit-text"><strong data-i18n="b3_title">Save water, earn more.</strong><p data-i18n="b3_desc">Smart irrigation suggestions cut water waste by up to 30%. Good for your farm, good for the land, good for your cost sheet.</p></div>
+</li>
+<li class="benefit-item fade-up">
+<div class="benefit-check">&#10003;</div>
+<div class="benefit-text"><strong data-i18n="b4_title">Sell direct, keep more.</strong><p data-i18n="b4_desc">Connect with buyers yourself &mdash; no agent, no middleman taking a cut. Fresh produce, fair price, your margin.</p></div>
+</li>
+<li class="benefit-item fade-up">
+<div class="benefit-check">&#10003;</div>
+<div class="benefit-text"><strong data-i18n="b5_title">Get answers in your language.</strong><p data-i18n="b5_desc">AI that understands Tamil farming context &mdash; not generic global advice that doesn&apos;t fit Tamil Nadu&apos;s soil, crops, or seasons.</p></div>
+</li>
+</ul>
+</div>
+<div>
+<div class="stats-box">
+<div class="stat-main">2,000+</div>
+<div class="stat-main-label" data-i18n="stat_label">Farmers testing VayalX in early phase</div>
+<div class="stat-secondary">
+<div class="stat-row"><div class="stat-icon">&#128167;</div><div class="stat-row-text"><strong data-i18n="s1_title">~30% water saved</strong><span data-i18n="s1_desc">Average reported by early adopters using smart irrigation</span></div></div>
+<div class="stat-row"><div class="stat-icon">&#128269;</div><div class="stat-row-text"><strong data-i18n="s2_title">Disease caught 2 days early</strong><span data-i18n="s2_desc">Farmers using AI detection before visible spread</span></div></div>
+<div class="stat-row"><div class="stat-icon">&#128176;</div><div class="stat-row-text"><strong data-i18n="s3_title">Direct sales, better margins</strong><span data-i18n="s3_desc">No middlemen &mdash; improved earnings per crop</span></div></div>
+<div class="stat-row"><div class="stat-icon">&#128506;&#65039;</div><div class="stat-row-text"><strong data-i18n="s4_title">10+ Tamil Nadu locations</strong><span data-i18n="s4_desc">Coimbatore, Erode, Nilgiri, Salem, Madurai, Trichy &amp; more</span></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+<div class="container">
+<div class="testimonials-header">
+<div class="section-label" data-i18n="test_label">Farmer Stories</div>
+<h2 data-i18n="test_title">Farmers are already using it</h2>
+<p data-i18n="test_sub">Real stories from real farmers in Tamil Nadu &mdash; not generic marketing copy.</p>
+</div>
+<div class="testimonials-grid">
+<div class="testimonial-card fade-up">
+<div class="tc-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<p class="tc-quote" data-i18n="t1_q">I caught powdery mildew on my tomatoes 2 days early. Saved the entire crop. This app is worth every rupee.</p>
+<div class="tc-author"><div class="tc-avatar">MS</div><div><div class="tc-name">Muthuswamy S.</div><div class="tc-role" data-i18n="t1_r">Vegetable farmer &middot; Coimbatore</div></div></div>
+</div>
+<div class="testimonial-card fade-up">
+<div class="tc-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<p class="tc-quote" data-i18n="t2_q">The weather alerts helped me schedule irrigation perfectly. Used 40% less water this season. No middleman to take cuts either.</p>
+<div class="tc-author"><div class="tc-avatar">RA</div><div><div class="tc-name">Rajesh A.</div><div class="tc-role" data-i18n="t2_r">Sugarcane farmer &middot; Erode</div></div></div>
+</div>
+<div class="testimonial-card fade-up">
+<div class="tc-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<p class="tc-quote" data-i18n="t3_q">Selling direct to buyers changed everything. I get better prices, and buyers get fresh produce. VayalX made it simple.</p>
+<div class="tc-author"><div class="tc-avatar">KN</div><div><div class="tc-name">Kamali N.</div><div class="tc-role" data-i18n="t3_r">Fruit farmer &middot; Nilgiri</div></div></div>
+</div>
+</div>
+</div>
+</section>
+<!-- EARLY ACCESS FORM -->
+<section id="early-access">
+<div class="container">
+<div class="ea-inner">
+<div class="section-label" data-i18n="ea_label">Early Access</div>
+<h2 data-i18n="ea_title">Be the first to farm smarter</h2>
+<p data-i18n="ea_sub">Join the waitlist. We&apos;ll notify you when early access opens in your area. No spam &mdash; just one email when it&apos;s ready.</p>
+<form class="ea-form" id="ea-form" novalidate>
+<input type="text" class="ea-input" id="ea-name" placeholder="Your name" autocomplete="name" aria-label="Your name" required />
+<input type="email" class="ea-input" id="ea-email" placeholder="Your email address" autocomplete="email" aria-label="Your email address" required />
+<button type="submit" class="btn btn-primary" id="ea-submit" data-i18n="ea_btn">Request Early Access</button>
+</form>
+<p class="ea-note"><span data-i18n="ea_free">Free to join.</span> <span data-i18n="ea_tag">No credit card. No obligation. Early access only.</span></p>
+<div class="ea-success" id="ea-success" role="alert">&#9989; You&apos;re on the list! We&apos;ll email you when early access opens in your area.</div>
+</div>
+</div>
+</section>
+<!-- FINAL CTA -->
+<section id="cta-final">
+<div class="container">
+<h2 data-i18n="cta_final_h2">Ready for smarter farming?</h2>
+<p data-i18n="cta_final_p">Join farmers who are already saving water, growing better crops, and earning fair prices. Early access opens soon across Tamil Nadu.</p>
+<a href="dashboard.html" class="btn btn-primary" id="final-cta-btn" style="font-size:1.05rem;padding:15px 34px;">🚀 Launch VayalX Dashboard (Instant Access)</a>
+<div class="cta-final-badges">
+<div class="cfb">&#127780;&#65039; Weather &middot; 10+ TN locations</div>
+<div class="cfb">&#128269; AI Disease Detection</div>
+<div class="cfb">&#128167; Smart Irrigation</div>
+<div class="cfb">&#128176; No Middlemen</div>
+<div class="cfb">&#129302; Tamil AI Chatbot</div>
+<div class="cfb">&#127963;&#65039; Govt Schemes Hub</div>
+</div>
+</div>
+</section>
+<!-- FOOTER -->
+<footer>
+<a href="#" class="footer-logo">Vayal<span>X</span></a>
+<div class="footer-links">
+<a href="#features" data-i18n="nav1">Features</a>
+<a href="#modules" data-i18n="nav2">All 16 Modules</a>
+<a href="#benefits" data-i18n="nav3">Benefits</a>
+<a href="#testimonials" data-i18n="nav4">Farmers</a>
+<a href="#early-access" data-i18n="get_started">Early Access</a>
+</div>
+<p class="footer-line">&copy; 2026 VayalX. Built for farmers, by people who care about farming.</p>
+<p class="footer-tamil">வயலிலே நன்றாக வளர. &nbsp;|&nbsp; Growing better together.</p>
+</footer>
+<script>
+// Bilingual Content dictionary
+var translations = {
+en: {
+tag: "Smart Farming TN",
+nav1: "Features", nav2: "All 16 Modules", nav3: "Benefits", nav4: "Farmers",
+get_started: "Get Started",
+hero_eyebrow: "🌿 Smart farming for Tamil Nadu",
+hero_title: "Smart farming made<br>simple for <strong>you</strong>",
+hero_sub: "Real-time weather alerts, disease detection, water management, direct buyer connections — all in Tamil and English, powered by AI.",
+hero_cta1: "🌾 Request Early Access",
+hero_cta2: "See How It Works",
+hero_trust: "2,000+ farmers in early testing · Tamil Nadu",
+feat_label: "Core Features",
+feat_title: "Built for your farm",
+feat_sub: "Everything a farmer needs to grow better crops, save water, reduce disease loss, and get fair prices — in one app.",
+f1_tag: "Weather & Alerts", f1_title: "Weather Forecast", f1_desc: "10+ locations across Tamil Nadu. Rain prediction, temperature, humidity, wind speed. Get alerts exactly when you need to act — before the rain, not after.",
+f2_tag: "AI-Powered", f2_title: "Disease Detection", f2_desc: "Upload a photo of your crop leaf. Our AI identifies disease in seconds — powdery mildew, blight, rust, and more. Get treatment suggestions instantly. No lab visit needed.",
+f3_tag: "Save Water", f3_title: "Smart Water Management", f3_desc: "Track water usage across your field. Get irrigation suggestions timed to weather forecasts. Save water, save money, grow better crops — all in one place.",
+f4_tag: "Record Keeping", f4_title: "Farm Records", f4_desc: "Log crops, expenses, and harvests season by season. Searchable records so you always know what worked — and what didn't — last season.",
+f5_tag: "Fair Prices", f5_title: "Market Updates & Direct Sales", f5_desc: "Daily prices for fruits, vegetables, and seeds across Tamil Nadu markets. Connect directly with buyers. No middlemen. No agents. Fair price for your harvest.",
+f6_tag: "Tamil + English", f6_title: "AI Chatbot (Farmer Assistant)", f6_desc: "Ask anything about farming, crop care, disease queries, or market prices. Like ChatGPT and Gemini specialized for farmers. Voice input and voice response included.",
+mod_title: "One platform. Everything your farm needs.",
+mod_sub: "VayalX packs 16 powerful farming modules into a single app — from soil to sale, from seedling to harvest.",
+ben_label: "Why VayalX", ben_title: "Why farmers choose VayalX",
+b1_title: "Stop guessing.", b1_desc: "Real weather data and alerts mean you're always one step ahead — not reacting after the damage is done.",
+b2_title: "Catch disease early.", b2_desc: "Identify crop problems — powdery mildew, blight, rust — before they spread. Save your tomatoes, sugarcane, and harvest.",
+b3_title: "Save water, earn more.", b3_desc: "Smart irrigation suggestions cut water waste by up to 30%. Good for your farm, good for the land, good for your cost sheet.",
+b4_title: "Sell direct, keep more.", b4_desc: "Connect with buyers yourself — no agent, no middleman taking a cut. Fresh produce, fair price, your margin.",
+b5_title: "Get answers in your language.", b5_desc: "AI that understands Tamil farming context — not generic global advice that doesn't fit Tamil Nadu's soil, crops, or seasons.",
+stat_label: "Farmers testing VayalX in early phase",
+s1_title: "~30% water saved", s1_desc: "Average reported by early adopters using smart irrigation",
+s2_title: "Disease caught 2 days early", s2_desc: "Farmers using AI detection before visible spread",
+s3_title: "Direct sales, better margins", s3_desc: "No middlemen — improved earnings per crop",
+s4_title: "10+ Tamil Nadu locations", s4_desc: "Coimbatore, Erode, Nilgiri, Salem, Madurai, Trichy & more",
+test_label: "Farmer Stories", test_title: "Farmers are already using it",
+test_sub: "Real stories from real farmers in Tamil Nadu — not generic marketing copy.",
+t1_q: "I caught powdery mildew on my tomatoes 2 days early. Saved the entire crop. This app is worth every rupee.",
+t1_r: "Vegetable farmer · Coimbatore",
+t2_q: "The weather alerts helped me schedule irrigation perfectly. Used 40% less water this season. No middleman to take cuts either.",
+t2_r: "Sugarcane farmer · Erode",
+t3_q: "Selling direct to buyers changed everything. I get better prices, and buyers get fresh produce. VayalX made it simple.",
+t3_r: "Fruit farmer · Nilgiri",
+ea_label: "Early Access", ea_title: "Be the first to farm smarter",
+ea_sub: "Join the waitlist. We'll notify you when early access opens in your area. No spam — just one email when it's ready.",
+ea_btn: "Request Early Access", ea_free: "Free to join.", ea_tag: "No credit card. No obligation. Early access only.",
+cta_final_h2: "Ready for smarter farming?",
+cta_final_p: "Join farmers who are already saving water, growing better crops, and earning fair prices. Early access opens soon across Tamil Nadu.",
+final_cta_btn: "🌾 Get Early Access"
+},
+ta: {
+tag: "ஸ்மார்ட் விவசாயம் TN",
+nav1: "சிறப்பம்சங்கள்", nav2: "16 தொகுதிகள்", nav3: "பயன்கள்", nav4: "விவசாயிகள்",
+get_started: "தொடங்க",
+hero_eyebrow: "🌿 தமிழ்நாடு விவசாயிகளுக்கான தளம்",
+hero_title: "உங்களுக்கான எளிய,<br>நவீன <strong>விவசாய தளம்</strong>",
+hero_sub: "வானிலை எச்சரிக்கை, பயிர் நோய் கண்டறிதல், பாசன நீர் மேலாண்மை, நேரடி சந்தை மற்றும் 16 விவசாய வசதிகள் — தமிழில் மற்றும் ஆங்கிலத்தில்.",
+hero_cta1: "🌾 முன்பதிவு செய்ய",
+hero_cta2: "செயல்படும் விதம்",
+hero_trust: "2,000+ விவசாயிகள் பயன்பாட்டில் · தமிழ்நாடு",
+feat_label: "முக்கிய வசதிகள்",
+feat_title: "உங்கள் வயலுக்கான பிரத்யேக வசதிகள்",
+feat_sub: "விவசாயிகள் சிறந்த மகசூல் பெற, நீர் சேமிக்க, நோய் இழப்பை தவிர்க்க, நியாயமான விலை பெற அனைத்தும் ஒரே செயலியில்.",
+f1_tag: "வானிலை & எச்சரிக்கை", f1_title: "வானிலை முன்னறிவிப்பு", f1_desc: "தமிழ்நாட்டின் 10+ மாவட்டங்களுக்கான மழை, வெப்பநிலை, ஈரப்பதம், காற்றின் வேகம் முன்னறிவிப்பு. உரிய நேரத்தில் எச்சரிக்கை.",
+f2_tag: "AI தொழில்நுட்பம்", f2_title: "பயிர் நோய் கண்டறிதல்", f2_desc: "இலை புகைப்படத்தை பதிவேற்றுங்கள். AI நொடிகளில் நோயை கண்டறிந்து உடனடி சிகிச்சை முறைகளை தமிழில் வழங்கும்.",
+f3_tag: "நீர் சேமிப்பு", f3_title: "ஸ்மார்ட் பாசன மேலாண்மை", f3_desc: "நீர் பயன்பாட்டை கண்காணிக்கவும். வானிலைக்கு ஏற்ப பாசன பரிந்துரை பெற்று 30% வரை தண்ணீரை சேமிக்கவும்.",
+f4_tag: "கணக்கு பதிவேடு", f4_title: "பண்ணை கணக்கு மேலாண்மை", f4_desc: "பயிர், செலவு மற்றும் அறுவடை விவரங்களை எளிதாக பதிவு செய்து பாதுகாக்கவும்.",
+f5_tag: "நியாயமான விலை", f5_title: "தினசரி சந்தை விலை & நேரடி விற்பனை", f5_desc: "காய்கறி, பழங்கள், விதைகளின் தினசரி மார்க்கெட் நிலவரம். இடைத்தரகர்கள் இன்றி வாங்குபவர்களிடம் நேரடி விற்பனை.",
+f6_tag: "தமிழ் + ஆங்கிலம்", f6_title: "AI விவசாய உதவியாளர்", f6_desc: "பயிர்கள், பூச்சி தாக்குதல், சந்தை விவரங்களை குரல் மூலமாகவோ தட்டச்சு செய்தோ தமிழில் கேட்டு தெரிந்துகொள்ளலாம்.",
+mod_title: "ஒரே தளம். உங்கள் பண்ணையின் அனைத்து தேவைகளுக்கும்.",
+mod_sub: "மண் பரிசோதனை முதல் அறுவடை விற்பனை வரை — 16 ஆற்றல் வாய்ந்த விவசாய தொகுதிகள் ஒரே செயலியில்.",
+ben_label: "ஏன் வயல்X", ben_title: "விவசாயிகள் வயல்X-ஐ தேர்வு செய்ய காரணம்",
+b1_title: "ஊகங்களை கைவிடுங்கள்.", b1_desc: "துல்லியமான வானிலை தகவல்களால் இழப்பு ஏற்படும் முன்பே தற்காப்பு நடவடிக்கை எடுக்கலாம்.",
+b2_title: "நோயை ஆரம்பத்திலேயே தடுத்திடுங்கள்.", b2_desc: "சாம்பல் நோய், இலை கருகல் போன்ற நோய்களை உடனே கண்டறிந்து உங்கள் பயிரை பாதுகாத்திடுங்கள்.",
+b3_title: "நீர் சேமிப்பு, அதிக லாபம்.", b3_desc: "30% வரை பாசன நீரை மிச்சப்படுத்தி செலவை குறைத்து லாபத்தை பெருக்குங்கள்.",
+b4_title: "நேரடி விற்பனை, கூடுதல் வருமானம்.", b4_desc: "இடைத்தரகர்கள் இன்றி நேரடியாக வியாபாரிகளிடம் விற்பனை செய்து நியாயமான விலை பெறுங்கள்.",
+b5_title: "உங்கள் தாய்மொழியில் விடை.", b5_desc: "தமிழ்நாட்டு மண், பருவநிலை மற்றும் பயிர்களுக்கு ஏற்ற பிரத்யேக தமிழ் AI ஆலோசனை.",
+stat_label: "துவக்க கட்டத்தில் பயன்பாட்டில் உள்ள விவசாயிகள்",
+s1_title: "~30% நீர் சேமிப்பு", s1_desc: "ஸ்மார்ட் பாசனம் பயன்படுத்திய விவசாயிகளின் சராசரி சேமிப்பு",
+s2_title: "2 நாட்கள் முன்பே நோய் கண்டுபிடிப்பு", s2_desc: "AI மூலம் பாதிப்பு தீவிரமடையும் முன்பே தடுப்பு",
+s3_title: "நேரடி விற்பனை & கூடுதல் லாபம்", s3_desc: "இடைத்தரகர் இல்லாத நேரடி விவசாய விற்பனை",
+s4_title: "10+ தமிழ்நாடு மாவட்டங்கள்", s4_desc: "கோவை, ஈரோடு, நீலகிரி, சேலம், மதுரை, திருச்சி உள்ளிட்ட மாவட்டங்கள்",
+test_label: "விவசாயிகள் அனுபவம்", test_title: "விவசாயிகள் ஏற்கனவே பயன்படுத்துகிறார்கள்",
+test_sub: "தமிழ்நாடு விவசாயிகளின் நேரடி உண்மை அனுபவங்கள்.",
+t1_q: "தக்காளி பயிரில் சாம்பல் நோயை 2 நாட்கள் முன்னரே கண்டறிந்து முழு பயிரையும் காப்பாற்றினேன். மிக பயனுள்ள செயலி.",
+t1_r: "காய்கறி விவசாயி · கோயம்புத்தூர்",
+t2_q: "வானிலை எச்சரிக்கை பாசன திட்டமிடலுக்கு பெரிதும் உதவியது. 40% வரை நீர் மிச்சமானது. தரகர் கமிஷனும் இல்லை.",
+t2_r: "கரும்பு விவசாயி · ஈரோடு",
+t3_q: "நேரடியாக வியாபாரிகளிடம் விற்றதால் அதிக விலை கிடைத்தது. நுகர்வோருக்கும் புதிய பழங்கள் கிடைத்தன.",
+t3_r: "பழ விவசாயி · நீலகிரி",
+ea_label: "முன்பதிவு", ea_title: "முதலில் இணைந்து பயன்பெறுங்கள்",
+ea_sub: "உங்கள் பகுதியில் பயன்பாட்டுக்கு வரும்போது தகவல் தெரிவிக்கிறோம். எவ்வித கட்டணமும் இல்லை.",
+ea_btn: "முன்பதிவு செய்ய", ea_free: "இலவச முன்பதிவு.", ea_tag: "கிரெடிட் கார்டு தேவையில்லை. எவ்வித கட்டணமும் இல்லை.",
+cta_final_h2: "நவீன விவசாயத்திற்கு நீங்கள் தயாரா?",
+cta_final_p: "நீர் சேமித்து, நல்ல விளைச்சல் பெற்று, நியாயமான விலை பெறும் விவசாயிகளுடன் இணையுங்கள்.",
+final_cta_btn: "🌾 இப்போது இணையுங்கள்"
+}
+};
+var currentLang = 'en';
+function setLanguage(lang) {
+currentLang = lang;
+document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+document.getElementById('lang-ta').classList.toggle('active', lang === 'ta');
+var dict = translations[lang];
+if (!dict) return;
+document.querySelectorAll('[data-i18n]').forEach(function(el) {
+var key = el.getAttribute('data-i18n');
+if (dict[key]) {
+el.innerHTML = dict[key];
+}
+});
+if (dict.hero_title) {
+document.getElementById('hero-title').innerHTML = dict.hero_title;
+}
+document.getElementById('ea-name').placeholder = lang === 'ta' ? 'உங்கள் பெயர்' : 'Your name';
+document.getElementById('ea-email').placeholder = lang === 'ta' ? 'உங்கள் மின்னஞ்சல் முகவரி' : 'Your email address';
+}
+document.getElementById('lang-toggle').addEventListener('click', function() {
+setLanguage(currentLang === 'en' ? 'ta' : 'en');
+});
+// Hamburger menu
+var hamburger = document.getElementById('hamburger');
+var navLinks = document.getElementById('nav-links');
+hamburger.addEventListener('click', function() {
+var isOpen = navLinks.classList.toggle('open');
+hamburger.setAttribute('aria-expanded', isOpen);
+});
+navLinks.querySelectorAll('a').forEach(function(link) {
+link.addEventListener('click', function() {
+navLinks.classList.remove('open');
+hamburger.setAttribute('aria-expanded', false);
+});
+});
+// Modules Filter
+var filterButtons = document.querySelectorAll('.mod-filter-btn');
+var moduleCards = document.querySelectorAll('.module-card');
+filterButtons.forEach(function(btn) {
+btn.addEventListener('click', function() {
+filterButtons.forEach(function(b) { b.classList.remove('active'); });
+this.classList.add('active');
+var filter = this.getAttribute('data-filter');
+moduleCards.forEach(function(card) {
+if (filter === 'all' || card.getAttribute('data-category') === filter) {
+card.style.display = 'block';
+} else {
+card.style.display = 'none';
+}
+});
+});
+});
+// Scroll animations
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+var observer = new IntersectionObserver(function(entries) {
+entries.forEach(function(entry) {
+if (entry.isIntersecting) {
+entry.target.classList.add('visible');
+observer.unobserve(entry.target);
+}
+});
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(function(el) { observer.observe(el); });
+}
+// Email form
+document.getElementById('ea-form').addEventListener('submit', function(e) {
+e.preventDefault();
+var nameEl = document.getElementById('ea-name');
+var emailEl = document.getElementById('ea-email');
+var name = nameEl.value.trim();
+var email = emailEl.value.trim();
+if (!name) { nameEl.style.borderColor = '#e74c3c'; nameEl.focus(); return; }
+var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if (!email || !emailRegex.test(email)) { emailEl.style.borderColor = '#e74c3c'; emailEl.focus(); return; }
+try {
+var saved = JSON.parse(localStorage.getItem('vayalx_signups') || '[]');
+saved.push({ name: name, email: email, date: new Date().toISOString() });
+localStorage.setItem('vayalx_signups', JSON.stringify(saved));
+} catch(err){}
+var successEl = document.getElementById('ea-success');
+successEl.innerHTML = currentLang === 'ta' 
+? '&#9989; அனுமதி வழங்கப்பட்டது! நேரடி டாஷ்போர்டுக்குள் செல்கிறது...' 
+: '&#9989; Access Granted! Redirecting to live Dashboard...';
+successEl.style.display = 'block';
+setTimeout(function() { window.location.href = 'dashboard.html'; }, 900);
+document.getElementById('ea-form').style.opacity = '0.4';
+document.getElementById('ea-form').style.pointerEvents = 'none';
+successEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+['ea-name', 'ea-email'].forEach(function(id) {
+document.getElementById(id).addEventListener('input', function() { this.style.borderColor = ''; });
+});
+// Header shadow on scroll
+window.addEventListener('scroll', function() {
+var header = document.getElementById('top-header');
+header.style.boxShadow = window.scrollY > 10 ? '0 2px 16px rgba(45,36,22,.1)' : 'none';
+}, { passive: true });
+</script>
+</body>
+</html>

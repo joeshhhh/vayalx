@@ -1,0 +1,83 @@
+--- dashboard.html
++++ dashboard.html
+@@ -3183,7 +3183,18 @@
+ 
+-    function renderMandiTable() {
++    async function renderMandiTable() {
+       const tbody = document.querySelector('#panel-market tbody');
+       if (!tbody) return;
+-      tbody.innerHTML   = '';
++      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;">⏳ Fetching market data...</td></tr>';
++
+       const query       = document.getElementById('mandi-search-input').value.toLowerCase();
+       const mandiFilter = document.getElementById('mandi-market-filter').value;
+ 
+-      const filtered = mandiItems.filter(item => {
+-        if (currentMandiCat !== 'all' && item.cat !== currentMandiCat) return false;
+-        if (mandiFilter !== 'all' && !item.mandi.includes(mandiFilter))  return false;
+-        if (query && !item.name.toLowerCase().includes(query) && !item.mandi.toLowerCase().includes(query)) return false;
+-        return true;
+-      });
++      try {
++        let filters = { state: 'Tamil Nadu' };
++        if (mandiFilter !== 'all') filters.market = mandiFilter;
++        
++        const response = await window.VayalXMarketplace.dashboards.getDailyMandiRates(filters);
++        const data = response?.data?.prices || [];
++        
++        let filtered = data;
++        if (query) {
++          filtered = filtered.filter(item => item.commodity.toLowerCase().includes(query) || item.market.toLowerCase().includes(query));
++        }
++        
++        tbody.innerHTML = '';
++        if (filtered.length === 0) {
++          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;">No matching results found.</td></tr>';
++          return;
++        }
+ 
+       filtered.forEach(item => {
+         const tr = document.createElement('tr');
+         tr.style.borderBottom = '1px solid var(--border)';
+         tr.className = 'price-tick';
+-        const trendBadge =
+-          item.up === true  ? `<span style="color:var(--growth-dk);font-weight:700;">▲ +${Math.abs(parseFloat(item.trend)).toFixed(2)}</span>` :
+-          item.up === false ? `<span style="color:var(--danger);font-weight:700;">▼ -${Math.abs(parseFloat(item.trend)).toFixed(2)}</span>` :
+-                              `<span style="color:var(--text-muted);font-weight:600;">● Stable</span>`;
+-        const modalDisplay = typeof item.modal === 'number' ? item.modal.toFixed(item.modal > 10 ? 0 : 1) : item.modal;
++        const trendBadge = `<span style="color:var(--text-muted);font-weight:600;">● Stable</span>`;
++        const modalDisplay = typeof item.modalPrice === 'number' ? item.modalPrice.toFixed(item.modalPrice > 10 ? 0 : 1) : item.modalPrice;
+         tr.innerHTML = `
+-          <td style="padding:12px 14px;font-weight:700;color:var(--soil);">${item.name}</td>
+-          <td style="padding:12px 14px;color:var(--text-muted);font-size:0.82rem;">${item.mandi}</td>
+-          <td style="padding:12px 14px;color:var(--text-muted);">₹${item.min}</td>
+-          <td style="padding:12px 14px;color:var(--text-muted);">₹${item.max}</td>
++          <td style="padding:12px 14px;font-weight:700;color:var(--soil);">${item.commodity}</td>
++          <td style="padding:12px 14px;color:var(--text-muted);font-size:0.82rem;">${item.market}</td>
++          <td style="padding:12px 14px;color:var(--text-muted);">₹${item.minPrice}</td>
++          <td style="padding:12px 14px;color:var(--text-muted);">₹${item.maxPrice}</td>
+           <td style="padding:12px 14px;text-align:right;font-weight:800;font-size:1rem;color:var(--soil);">₹${modalDisplay}</td>
+           <td style="padding:12px 14px;text-align:center;">${trendBadge}</td>
+           <td style="padding:12px 14px;text-align:center;">
+-            <button class="btn btn-sm btn-outline" style="padding:3px 8px;font-size:0.72rem;" onclick="prebookFromMandi('${item.name}',${item.modal})">Pre-Book</button>
++            <button class="btn btn-sm btn-outline" style="padding:3px 8px;font-size:0.72rem;" onclick="prebookFromMandi('${item.commodity}',${item.modalPrice})">Pre-Book</button>
+           </td>`;
+         tbody.appendChild(tr);
+       });
++
++      const sourceP = document.getElementById('market-source');
++      if (!sourceP) {
++        const panel = document.getElementById('panel-market');
++        const info = document.createElement('p');
++        info.id = 'market-source';
++        info.style = 'font-size:0.8rem; color:var(--text-muted); margin-top:10px; text-align:right;';
++        panel.appendChild(info);
++      }
++      if (response && response.source) {
++        document.getElementById('market-source').innerHTML = `Source: <strong>${response.source.provider}</strong> (${response.source.mode}) ${response.source.cached ? ' [Cached]' : ''}`;
++      }
++
++      } catch (e) {
++        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;">Live data is temporarily unavailable.</td></tr>';
++      }
+     }

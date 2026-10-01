@@ -1,0 +1,44 @@
+{
+  "name": "vayalx-backend",
+  "version": "1.0.0",
+  "description": "VAYALX - Smart Agriculture Platform Backend Foundation (Phase 1)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "test": "JWT_SECRET=test_secret node src/tests/model.test.js && JWT_SECRET=test_secret node src/tests/auth.test.js && JWT_SECRET=test_secret node src/tests/marketplace.test.js && JWT_SECRET=test_secret node src/tests/ai.test.js",
+    "test:models": "node src/tests/model.test.js",
+    "test:auth": "JWT_SECRET=test_secret node src/tests/auth.test.js",
+    "test:marketplace": "JWT_SECRET=test_secret node src/tests/marketplace.test.js",
+    "test:ai": "JWT_SECRET=test_secret node src/tests/ai.test.js",
+    "seed": "node src/seed/seed.js",
+    "seed:admin": "node src/seed/seedAdmin.js",
+    "seed:marketplace": "node src/seed/seedMarketplace.js"
+  },
+  "keywords": [
+    "vayalx",
+    "agriculture",
+    "smart-farming",
+    "express",
+    "mongoose",
+    "nodejs"
+  ],
+  "author": "VAYALX Team",
+  "license": "ISC",
+  "dependencies": {
+    "@google/genai": "^2.24.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.2.0",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.3.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "zod": "^4.6.5"
+  }
+}
